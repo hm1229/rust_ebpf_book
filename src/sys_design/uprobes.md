@@ -48,14 +48,14 @@
 
 - **addr：** 跟踪的地址
 - **length：** 指令长度
-- **slot_addr：**用户态插槽的地址
-- **addisp：**栈指针偏移
-- **func_ra：**返回值地址
-- **func_ebreak_addr：**函数中断地址
-- **insn_ebreak_addr：**指令中断地址
-- **handler：**跟踪前回调函数
-- **post_handler：**跟踪后回调函数
-- **probe_type：**探测类型
+- **slot_addr：** 用户态插槽的地址
+- **addisp：** 栈指针偏移
+- **func_ra：** 返回值地址
+- **func_ebreak_addr：** 函数中断地址
+- **insn_ebreak_addr：** 指令中断地址
+- **handler：** 跟踪前回调函数
+- **post_handler：** 跟踪后回调函数
+- **probe_type：** 探测类型
 
 ## 流程
 
