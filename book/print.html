@@ -1,0 +1,573 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Rust eBPF</title>
+        <meta name="robots" content="noindex" />
+
+
+        <!-- Custom HTML head -->
+        
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="background/kprobes_uprobes.html"><strong aria-hidden="true">2.1.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="background/rust_async.html"><strong aria-hidden="true">2.2.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="background/eBPF.html"><strong aria-hidden="true">2.3.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_design/kprobes.html"><strong aria-hidden="true">3.1.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="sys_design/uprobes.html"><strong aria-hidden="true">3.2.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="sys_design/async_func.html"><strong aria-hidden="true">3.3.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="sys_design/ebpf.html"><strong aria-hidden="true">3.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_impl/probes.html"><strong aria-hidden="true">4.1.</strong> 动态插桩功能</a></li></ol></li><li class="chapter-item expanded "><a href="log.html"><strong aria-hidden="true">5.</strong> 项目日志</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Rust eBPF</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="proj145技术报告"><a class="header" href="#proj145技术报告">proj145技术报告</a></h1>
+<h2 id="目标"><a class="header" href="#目标">目标</a></h2>
+<p>ebpf in rust 目前有五个主要目标</p>
+<ul>
+<li><input disabled="" type="checkbox" checked=""/>
+<p><a href="./sys_design//kprobes.html">kprobes</a></p>
+<p>完成内核空间指令的动态插桩，对内核函数/合法指令进行跟踪。</p>
+</li>
+<li><input disabled="" type="checkbox" checked=""/>
+<p><a href="./sys_design/uprobes.html">uprobes</a></p>
+<p>完成用户空间指令的动态插桩，对用户态程序中的函数/合法指令进行跟踪。</p>
+</li>
+<li><input disabled="" type="checkbox"/>
+<p>function parameter probing in probes。</p>
+<p>完成probes对函数参数的获取</p>
+</li>
+<li><input disabled="" type="checkbox"/>
+<p>async in probes</p>
+<p>完成probes对rust async 函数的跟踪支持。</p>
+</li>
+<li><input disabled="" type="checkbox"/>
+<p>ebpf</p>
+<p>根据ebpf原理实现一个简单的ebpf。</p>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="linux中的kprobes与uprobes"><a class="header" href="#linux中的kprobes与uprobes">Linux中的kprobes与uprobes</a></h1>
+<h2 id="kprobes"><a class="header" href="#kprobes">kprobes</a></h2>
+<p>开发人员在内核或者模块的调试过程中，往往会需要要知道其中的一些函数有无被调用、何时被调用、执行是否正确以及函数的入参和返回值是什么等等。比较简单的做法是在内核代码对应的函数中添加日志打印信息，但这种方式往往需要重新编译内核或模块，重新启动设备之类的，操作较为复杂甚至可能会破坏原有的代码执行过程。</p>
+<p>而利用kprobes技术，用户可以定义自己的回调函数，然后在内核或者模块中几乎所有的函数中（有些函数是不可探测的，例如kprobes自身的相关实现函数，后文会有详细说明）动态的插入探测点，当内核执行流程执行到指定的探测函数时，会调用该回调函数，用户即可收集所需的信息了，同时内核最后还会回到原本的正常执行流程。如果用户已经收集足够的信息，不再需要继续探测，则同样可以动态地移除探测点。因此kprobes技术具有对内核执行流程影响小和操作方便的优点。</p>
+<h2 id="uprobes"><a class="header" href="#uprobes">uprobes</a></h2>
+<p>uprobes 是Linux提供用户态的动态探针，合并于2012年7月发布的 Linux 3.5 内核中。uprobes 和 kprobes 十分相似，只不过用在用户态而已。 uprobes 可以检测到用户态函数入口和出口的位置。uprobes 工作原理和 kprobes 差不多，它会在目标位置插入一个断点，这样当程序执行流执行到这个地方会去执行我们设置的 uprobe handle。当我们不再不需探测和收集信息时候，可以移除断点恢复原状。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rust-异步并发"><a class="header" href="#rust-异步并发">Rust 异步并发</a></h1>
+<h2 id="简介"><a class="header" href="#简介">简介</a></h2>
+<p>在当前的 rust 生态中，我们可以使用async/await来将异步函数按照同步函数的格式一样书写，使代码更加整洁，易于维护。</p>
+<h2 id="future并发模式"><a class="header" href="#future并发模式">Future并发模式</a></h2>
+<p>Future异步并发模式是以代理模式和异步开发的混合产物，future是对将来的一种代理凭证，凭借这个凭证可以异步地在未来某个时刻得到确定的结果。</p>
+<p>Rust对Future异步并发模式做了一个完整的抽象，包含在第三方库<code>future-rs</code>中。该抽象主要包三个部件：</p>
+<ul>
+<li><strong>Future</strong>： 基本的异步计算抽象单元</li>
+<li><strong>Executor</strong>：异步计算调度层</li>
+<li><strong>Task</strong>：异步计算执行层</li>
+</ul>
+<h3 id="future"><a class="header" href="#future">Future</a></h3>
+<p>在Rust中Future是一个trait，其源代码为：</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub trait Future{
+    type Output;
+    fn poll(self: Pin&lt;&amp;mut self&gt;, lw: &amp;LocalWaker) -&gt; Poll&lt;Self::Output&gt;;
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>其中poll方法是Future的核心，它是对轮询行为的一种抽象。在Rust中，每个Future都需要使用poll方法来轮询所要计算值的状态。该方法返回的Poll是一个枚举类型：</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum Poll&lt;T&gt;{
+    Ready(T),
+    Pending,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<p>Poll&lt;T&gt;枚举类型是对准备好和未完成两种状态的同意抽象，以此来表达Future的结果。</p>
+<h3 id="executor与task"><a class="header" href="#executor与task">Executor与Task</a></h3>
+<p>在实际的异步开发中，需要一个专门的调度器来对具体的任务进行管理统筹，这个调度器就是Executor，具体的异步任务就是Task。</p>
+<h2 id="asyncawait"><a class="header" href="#asyncawait">async/await</a></h2>
+<p>async：产生一个 Future 对象，一个没有任何作用的对象，必须由调用器调用才会有用。
+await: 等待异步操作完成（基于语义理解，其实很多情况只有调用 future.await 才是事实上去调用，具体是不是之前就开始执行，这个要看我们的调用器是什么），这步是阻塞当前线程，这个语法属于 Future 对象才能调用，而且必须要在 async 函数内。</p>
+<h2 id="具体实现原理仍在继续理解调查中"><a class="header" href="#具体实现原理仍在继续理解调查中">具体实现原理（仍在继续理解调查中）</a></h2>
+<p>async块会生成一个Generator&lt;Yield=()&gt;的生成器，然后将该生成器通过单元结构体GenFuture进行包装，最后为该GenFuture实现Future</p>
+<p>await!展开的代码会在loop循环中进行判断，如果是Ready则退出。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="linux中的ebpf仍需继续了解"><a class="header" href="#linux中的ebpf仍需继续了解">Linux中的eBPF（仍需继续了解）</a></h1>
+<h1 id="简介-1"><a class="header" href="#简介-1">简介</a></h1>
+<p>eBPF 源于 BPF，本质上是处于内核中的一个高效与灵活的虚类虚拟机组件，以一种安全的方式在许多内核 hook 点执行字节码。BPF 最初的目的是用于高效网络报文过滤，经过重新设计，eBPF 不再局限于网络协议栈，已经成为内核顶级的子系统，演进为一个通用执行引擎。开发者可基于 eBPF 开发性能分析工具、软件定义网络、安全等诸多场景。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="kprobes-1"><a class="header" href="#kprobes-1">kprobes</a></h1>
+<h2 id="设计思路"><a class="header" href="#设计思路">设计思路</a></h2>
+<h3 id="函数跟踪"><a class="header" href="#函数跟踪">函数跟踪</a></h3>
+<ol>
+<li>
+<p>注册阶段</p>
+<ul>
+<li>根据传入的地址，解析指令，获取sp的变化值，与<code>handler</code>，<code>post_handler</code>等一起存入<code>kprobes</code>数据结构中.</li>
+<li>将当前地址的指令改为<code>ebreak</code>.</li>
+</ul>
+</li>
+<li>
+<p>中断处理阶段</p>
+<p>根据中断地址判断当前属于哪个<code>kprobe</code>,并判断其属于哪一次中断.</p>
+<ul>
+<li>第一次中断
+<ol>
+<li>执行<code>handler</code>.</li>
+<li>保存跟踪函数的返回值，并将其改为ebreak的地址.</li>
+<li>根据解析出的sp值，对堆栈指针进行操作.</li>
+<li>返回到中断指令的下一条指令.</li>
+</ol>
+</li>
+<li>第二次中断
+<ol>
+<li>执行<code>post_handler</code>.</li>
+<li>将中断的返回地址改为之前保存的返回值.</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="指令跟踪"><a class="header" href="#指令跟踪">指令跟踪</a></h3>
+<ol>
+<li>
+<p>注册阶段</p>
+<ul>
+<li>根据传入的地址，解析指令，判断是否合法(合法的判断条件同Linux的规则)，将<code>handler</code>，<code>post_handler</code>等一起存入<code>kprobes</code>数据结构中.</li>
+<li>如果合法，将当前地址的指令存放到一片已经开辟了的内存空间中，并在指令后添加ebreak指令.</li>
+</ul>
+</li>
+<li>
+<p>中断处理阶段</p>
+<p>根据中断地址判断当前属于哪个<code>kprobe</code>,并判断其属于哪一次中断.</p>
+<ul>
+<li>第一次中断
+<ol>
+<li>执行<code>handler</code>.</li>
+<li>返回到注册阶段开辟出来的地址上.</li>
+</ol>
+</li>
+<li>第二次中断
+<ol>
+<li>执行<code>post_handler</code>.</li>
+<li>将中断返回地址改为原地址的下一条指令的地址.</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="数据结构"><a class="header" href="#数据结构">数据结构</a></h3>
+<ul>
+<li><strong>addr：</strong> 跟踪的地址</li>
+<li><strong>length：</strong> 指令长度</li>
+<li>**slot：**指令插槽值</li>
+<li>**addisp：**栈指针偏移</li>
+<li>**func_ra：**返回值地址</li>
+<li>**func_ebreak_addr：**函数中断地址</li>
+<li>**insn_ebreak_addr：**指令中断地址</li>
+<li>**handler：**跟踪前回调函数</li>
+<li>**post_handler：**跟踪后回调函数</li>
+<li>**probe_type：**探测类型</li>
+</ul>
+<h2 id="流程图"><a class="header" href="#流程图">流程图</a></h2>
+<h3 id="流程图数据结构版"><a class="header" href="#流程图数据结构版">流程图数据结构版<img src="sys_design/../img/kprobes.png" alt="" /></a></h3>
+<h3 id="流程图堆栈版"><a class="header" href="#流程图堆栈版">流程图堆栈版</a></h3>
+<p><img src="sys_design/../img/kprobes2.png" alt="" /></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="uprobes-1"><a class="header" href="#uprobes-1">Uprobes</a></h1>
+<h2 id="设计思路-1"><a class="header" href="#设计思路-1">设计思路</a></h2>
+<h3 id="函数跟踪-1"><a class="header" href="#函数跟踪-1">函数跟踪</a></h3>
+<ol>
+<li>
+<p>注册阶段</p>
+<ul>
+<li>根据传入的地址与探测的用户程序路径，解析指令，获取sp的变化值，与<code>handler</code>，<code>post_handler</code>等一起存入<code>uprobes</code>数据结构中.</li>
+<li>将当前地址改为可写并修改指令为<code>ebreak</code>.</li>
+</ul>
+</li>
+<li>
+<p>中断处理阶段</p>
+<p>根据中断地址与进程inode判断当前属于哪个<code>uprobe</code>,并判断其属于哪一次中断.剩下同kprobes处理办法.</p>
+<ul>
+<li>第一次中断
+<ol>
+<li>执行<code>handler</code>.</li>
+<li>保存跟踪函数的返回值，并将其改为ebreak的地址.</li>
+<li>根据解析出的sp值，对堆栈指针进行操作.</li>
+<li>返回到中断指令的下一条指令.</li>
+</ol>
+</li>
+<li>第二次中断
+<ol>
+<li>执行<code>post_handler</code>.</li>
+<li>将中断的返回地址改为之前保存的返回值.</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="指令跟踪-1"><a class="header" href="#指令跟踪-1">指令跟踪</a></h3>
+<ol>
+<li>
+<p>注册阶段</p>
+<ul>
+<li>根据传入的地址，解析指令，判断是否合法(合法的判断条件同Linux的规则)，将<code>handler</code>，<code>post_handler</code>等一起存入<code>kprobes</code>数据结构中.</li>
+<li>如果合法，开辟一块可读可写可执行的用户态空间，将当前地址的指令存放到开辟了的用户态空间中，并在指令后添加ebreak指令.</li>
+</ul>
+</li>
+<li>
+<p>中断处理阶段</p>
+<p>根据中断地址与用户态进程的路径判断当前属于哪个<code>uprobe</code>,并判断其属于哪一次中断.剩下同kprobes处理办法.</p>
+<ul>
+<li>第一次中断
+<ol>
+<li>执行<code>handler</code>.</li>
+<li>返回到注册阶段开辟出来的地址上.</li>
+</ol>
+</li>
+<li>第二次中断
+<ol>
+<li>执行<code>post_handler</code>.</li>
+<li>将中断返回地址改为原地址的下一条指令的地址.</li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="执行阶段"><a class="header" href="#执行阶段">执行阶段</a></h3>
+<p>获取即将运行的用户态进程，将该进程上已经注册的跟踪点进行操作，添加ebreak等</p>
+<h3 id="数据结构-1"><a class="header" href="#数据结构-1">数据结构</a></h3>
+<ul>
+<li><strong>addr：</strong> 跟踪的地址</li>
+<li><strong>length：</strong> 指令长度</li>
+<li>**slot_addr：**用户态插槽的地址</li>
+<li>**addisp：**栈指针偏移</li>
+<li>**func_ra：**返回值地址</li>
+<li>**func_ebreak_addr：**函数中断地址</li>
+<li>**insn_ebreak_addr：**指令中断地址</li>
+<li>**handler：**跟踪前回调函数</li>
+<li>**post_handler：**跟踪后回调函数</li>
+<li>**probe_type：**探测类型</li>
+</ul>
+<h2 id="流程"><a class="header" href="#流程">流程</a></h2>
+<p>流程基本同<a href="sys_design/./kprobes#%E6%B5%81%E7%A8%8B%E5%9B%BE">kprobes</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="异步函数的动态跟踪"><a class="header" href="#异步函数的动态跟踪">异步函数的动态跟踪</a></h1>
+<h2 id="设计思路初步想法"><a class="header" href="#设计思路初步想法">设计思路（初步想法）</a></h2>
+<ul>
+<li>跟踪poll的第一次入与出</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ebpf"><a class="header" href="#ebpf">eBPF</a></h1>
+<p>新建文件夹</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="内核及用户态动态跟踪程序"><a class="header" href="#内核及用户态动态跟踪程序">内核及用户态动态跟踪程序</a></h1>
+<h2 id="内核跟踪库--rkprobes-lib"><a class="header" href="#内核跟踪库--rkprobes-lib">内核跟踪库  rkprobes lib</a></h2>
+<p>可以在<a href="sys_impl/./sys_design/kprobes.html">kprobes的系统设计</a>一节看到关于kprobes的实现原理.</p>
+<p>如果单独使用kprobes，kprobes可以单独成为一个lib，方便所有操作系统调用.</p>
+<p>lib: github<a href="https://github.com/hm1229/rkprobes">仓库.</a></p>
+<h3 id="使用说明"><a class="header" href="#使用说明">使用说明</a></h3>
+<h4 id="apis"><a class="header" href="#apis">APIs</a></h4>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// register a kprobe, need the address of the function or instruction, two handler functions and the type you want to probe
+pub fn kprobe_register(
+    addr: usize, 
+    handler: Arc&lt;Mutex&lt;dyn FnMut(&amp;mut TrapFrame) + Send&gt;&gt;, 
+    post_handler: Option&lt;Arc&lt;Mutex&lt;dyn FnMut(&amp;mut TrapFrame) + Send&gt;&gt;&gt;, 
+    probe_type: ProbeType
+) -&gt; isize ;
+
+//unregister address-related probe
+pub fn kprobe_unregister(addr: usize) -&gt; isize;
+
+//trap handler for handler kprobes
+pub fn kprobes_trap_handler(cx: &amp;mut TrapFrame);
+<span class="boring">}
+</span></code></pre></pre>
+<h4 id="方法"><a class="header" href="#方法">方法</a></h4>
+<ul>
+<li>
+<p>讲 <code>kprobes_trap_handler</code>放到OS的中断处理程序中.例如：</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn trap_handler_no_frame(tf: &amp;mut TrapFrame) {
+    let scause = scause::read();
+    match scause.cause() {
+        Trap::Exception(E::Breakpoint) =&gt; rkprobes::kprobes_trap_handler(tf), //add here
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>准备 <code>handler</code> 和 <code>post_handler</code>, <code>handler</code> 在函数或指令之前执行的跟踪函数， <code>post_hanlder</code> 在函数或指令执行之后运行的跟踪函数. <code>handler</code>是必须的,  <code>post_handler</code> 是可选择的,这两个函数的输入值是一个包含所有寄存器的结构体，使用的是TrapFrame的结构体.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub fn example_pre_handler(cx: &amp;mut TrapFrame){
+    println!{&quot;pre_handler: spec:{:#x}&quot;, cx.sepc};
+}
+
+pub fn example_post_handler(cx: &amp;mut TrapFrame){
+    println!{&quot;post_handler: spec:{:#x}&quot;, cx.sepc};
+}
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>为了注册一个 <code>kprobe</code>, 你需要传递函数或指令的地址 , 自己写好的<code>handler</code> 和 <code>post_handler</code>(可选), 跟踪的方式(函数或者指令).</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ProbeType{
+    Insn,
+    Func,
+}
+
+rkprobes::kprobe_register(
+    self.addr,
+    alloc::sync::Arc::new(Mutex::new(move |cx: &amp;mut TrapFrame| {
+        example_pre_handler(cx);
+    })),
+    Some(alloc::sync::Arc::new(Mutex::new(move |cx: &amp;mut TrapFrame| {
+        example_post_handler(cx);
+    }))),
+    ProbeType::Insn,
+)
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>为了注销一个<code>kprobe</code>, 你只需要传递跟踪点的地址.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>rkprobes::kprobe_unregister(addr)
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+</ul>
+<h2 id="rcore中内核及用户态跟踪程序"><a class="header" href="#rcore中内核及用户态跟踪程序">rCore中内核及用户态跟踪程序</a></h2>
+<h3 id="kprobes-2"><a class="header" href="#kprobes-2">kprobes</a></h3>
+<p>kprobes的操作与<a href="sys_impl/probes.html#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E">rkprobes</a>使用一致.</p>
+<p>为了方便后续可以跟踪异步函数，probe_type结构体进行了一次更新.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ProbeType {
+    Insn,
+    SyncFunc,
+    AsyncFunc,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="uprobes-2"><a class="header" href="#uprobes-2">uprobes</a></h3>
+<p>在注册阶段需要额外传入需要跟踪的用户态进程的路径,其余参数与kprobes一样.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn register_uprobes(
+    &amp;self,
+    path: String,
+    addr: usize,
+    handler: Arc&lt;Mutex&lt;dyn FnMut(&amp;mut UserContext) + Send&gt;&gt;,
+    post_handler: Option&lt;Arc&lt;Mutex&lt;dyn FnMut(&amp;mut UserContext) + Send&gt;&gt;&gt;,
+    probe_type: ProbeType
+) -&gt; isize;
+<span class="boring">}
+</span></code></pre></pre>
+<p>中断处理函数需要传入另一个存储寄存器的结构体</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn uprobes_trap_handler(&amp;self, cx: &amp;mut UserContext);
+<span class="boring">}
+</span></code></pre></pre>
+<p>针对每一个用户态进程，需要在进入时初始化当前进程注册过的跟踪点</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn uprobes_init(&amp;self)
+<span class="boring">}
+</span></code></pre></pre>
+<h4 id="使用说明-1"><a class="header" href="#使用说明-1">使用说明</a></h4>
+<p>如果需要使用uprobes，你需要：</p>
+<ul>
+<li>注册uprobes.</li>
+<li>将uprobes中断处理函数放到内核处理用户态发生的中断的函数中去.</li>
+<li>在sys_exec中加入初始化函数<code>uprobes_init</code>.</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="开发日志"><a class="header" href="#开发日志">开发日志</a></h1>
+<h3 id="531"><a class="header" href="#531">5.31</a></h3>
+<p>完成初赛技术报告.</p>
+<h3 id="529"><a class="header" href="#529">5.29</a></h3>
+<p>完成完整的uprobes功能，可以动态跟踪任意用户进程.</p>
+<h3 id="515"><a class="header" href="#515">5.15</a></h3>
+<p>完成部分uprobes功能，可以动态跟踪当前用户进程的函数或指令.</p>
+<h3 id="131"><a class="header" href="#131">1.31</a></h3>
+<p>完成kprobes相关功能的实现，内核相关程序可以动态进行插桩.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </body>
+</html>
