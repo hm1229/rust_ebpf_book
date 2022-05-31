@@ -142,24 +142,36 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="proj145技术报告"><a class="header" href="#proj145技术报告">proj145技术报告</a></h1>
-<h2 id="目标"><a class="header" href="#目标">目标</a></h2>
+                        <h1 id="用rust重新实现ebpf"><a class="header" href="#用rust重新实现ebpf">用Rust重新实现eBPF</a></h1>
+<h2 id="项目描述"><a class="header" href="#项目描述">项目描述</a></h2>
+<p>eBPF是Linux操作系统中监控和调试内核活动的方便工具，将eBPF以及其相关的kprobes内核监控程序与uprobes用户进程监控程序使用Rust进行重新实现，并针对Rust异步函数进行特有的监控.</p>
+<p>该项目目前被应用于：</p>
+<ul>
+<li><a href="https://github.com/NickCao/rCore">NickCao/rCore</a>，其中kprobes作为独立的内核模块，提供代码调试等功能.</li>
+<li><a href="https://github.com/latte-c/rCore/tree/bpf">latte-c/rCore at bpf </a>，其中kprobes与uprobes给eBPF提供跟踪点功能.</li>
+</ul>
+<h2 id="具体目标"><a class="header" href="#具体目标">具体目标</a></h2>
 <p>ebpf in rust 目前有五个主要目标</p>
 <ul>
-<li><input disabled="" type="checkbox" checked=""/><a href="./sys_design/kprobes.html">kprobes</a>
-<p>完成内核空间指令的动态插桩，对内核函数/合法指令进行跟踪。</p>
+<li><input disabled="" type="checkbox" checked=""/>
+<a href="./sys_design/kprobes.html">kprobes</a>
+<p>完成内核空间指令的动态插桩，对内核函数/合法指令进行跟踪.</p>
 </li>
-<li><input disabled="" type="checkbox" checked=""/><a href="./sys_design/uprobes.html">uprobes</a>
-<p>完成用户空间指令的动态插桩，对用户态程序中的函数/合法指令进行跟踪。</p>
+<li><input disabled="" type="checkbox" checked=""/>
+<a href="./sys_design/uprobes.html">uprobes</a>
+<p>完成用户空间指令的动态插桩，对用户态程序中的函数/合法指令进行跟踪.</p>
 </li>
-<li><input disabled="" type="checkbox"/>function parameter probing in probes。
-<p>完成probes对函数参数的获取</p>
+<li><input disabled="" type="checkbox"/>
+function parameter probing in probes
+<p>完成probes对函数参数的获取.</p>
 </li>
-<li><input disabled="" type="checkbox"/>async in probes
-<p>完成probes对rust async 函数的跟踪支持。</p>
+<li><input disabled="" type="checkbox"/>
+async in probes
+<p>完成probes对rust async 函数的跟踪支持.</p>
 </li>
-<li><input disabled="" type="checkbox"/>ebpf
-<p>根据ebpf原理实现一个简单的ebpf。</p>
+<li><input disabled="" type="checkbox"/>
+ebpf
+<p>根据ebpf原理实现一个简单的ebpf.</p>
 </li>
 </ul>
 
