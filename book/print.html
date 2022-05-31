@@ -186,7 +186,7 @@
 <p>在当前的 rust 生态中，我们可以使用async/await来将异步函数按照同步函数的格式一样书写，使代码更加整洁，易于维护。</p>
 <h2 id="future并发模式"><a class="header" href="#future并发模式">Future并发模式</a></h2>
 <p>Future异步并发模式是以代理模式和异步开发的混合产物，future是对将来的一种代理凭证，凭借这个凭证可以异步地在未来某个时刻得到确定的结果。</p>
-<p>Rust对Future异步并发模式做了一个完整的抽象，包含在第三方库<code>future-rs</code>中。该抽象主要包三个部件：</p>
+<p>Rust对Future异步并发模式做了一个完整的抽象，包含在第三方库<code>future-rs</code>中。该抽象主要包含三个部件：</p>
 <ul>
 <li><strong>Future</strong>： 基本的异步计算抽象单元</li>
 <li><strong>Executor</strong>：异步计算调度层</li>
@@ -213,7 +213,7 @@
 }
 <span class="boring">}
 </span></code></pre></pre>
-<p>Poll&lt;T&gt;枚举类型是对准备好和未完成两种状态的同意抽象，以此来表达Future的结果。</p>
+<p>Poll&lt;T&gt;枚举类型是对准备好和未完成两种状态的统一抽象，以此来表达Future的结果。</p>
 <h3 id="executor与task"><a class="header" href="#executor与task">Executor与Task</a></h3>
 <p>在实际的异步开发中，需要一个专门的调度器来对具体的任务进行管理统筹，这个调度器就是Executor，具体的异步任务就是Task。</p>
 <h2 id="asyncawait"><a class="header" href="#asyncawait">async/await</a></h2>
