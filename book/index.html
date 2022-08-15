@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="background/kprobes_uprobes.html"><strong aria-hidden="true">2.1.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="background/rust_async.html"><strong aria-hidden="true">2.2.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="background/eBPF.html"><strong aria-hidden="true">2.3.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_design/kprobes.html"><strong aria-hidden="true">3.1.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="sys_design/uprobes.html"><strong aria-hidden="true">3.2.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="sys_design/async_func.html"><strong aria-hidden="true">3.3.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="sys_design/ebpf.html"><strong aria-hidden="true">3.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_impl/probes.html"><strong aria-hidden="true">4.1.</strong> 动态插桩功能</a></li></ol></li><li class="chapter-item expanded "><a href="log.html"><strong aria-hidden="true">5.</strong> 项目日志</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="background/riscv_insn.html"><strong aria-hidden="true">2.1.</strong> Risc-V指令集</a></li><li class="chapter-item expanded "><a href="background/kprobes_uprobes.html"><strong aria-hidden="true">2.2.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="background/rust_async.html"><strong aria-hidden="true">2.3.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="background/eBPF.html"><strong aria-hidden="true">2.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_design/insn_decode.html"><strong aria-hidden="true">3.1.</strong> Risc-V指令解码</a></li><li class="chapter-item expanded "><a href="sys_design/kprobes.html"><strong aria-hidden="true">3.2.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="sys_design/uprobes.html"><strong aria-hidden="true">3.3.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="sys_design/async_func.html"><strong aria-hidden="true">3.4.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="sys_design/ebpf.html"><strong aria-hidden="true">3.5.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_impl/insn_decode.html"><strong aria-hidden="true">4.1.</strong> Risc-V指令解码功能</a></li><li class="chapter-item expanded "><a href="sys_impl/probes.html"><strong aria-hidden="true">4.2.</strong> 动态插桩功能</a></li><li class="chapter-item expanded "><a href="sys_impl/ebpf.html"><strong aria-hidden="true">4.3.</strong> eBPF实现</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 系统测试及演示程序</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="test&demo/dynamic_probe.html"><strong aria-hidden="true">5.1.</strong> 动态注册eBPF程序测试</a></li></ol></li><li class="chapter-item expanded "><a href="log.html"><strong aria-hidden="true">6.</strong> 项目日志</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -151,27 +151,31 @@
 <li><a href="https://github.com/latte-c/rCore/tree/bpf">latte-c/rCore at bpf </a>，其中kprobes与uprobes给eBPF提供跟踪点功能.</li>
 </ul>
 <h2 id="具体目标"><a class="header" href="#具体目标">具体目标</a></h2>
-<p>ebpf in rust 目前有五个主要目标</p>
+<p>ebpf in rust 目前几个主要目标</p>
 <ul>
 <li><input disabled="" type="checkbox" checked=""/>
-<a href="./sys_design/kprobes.html">kprobes</a>
+<p><a href="./sys_impl/insn_decode.html">riscv_insn_decode</a></p>
+<p>解码riscv指令，对其进行跟踪合法性分析.</p>
+</li>
+<li><input disabled="" type="checkbox" checked=""/>
+<p><a href="./sys_impl/probes.html#%E5%86%85%E6%A0%B8%E8%B7%9F%E8%B8%AA%E5%BA%93-rkprobes_lib">kprobes</a></p>
 <p>完成内核空间指令的动态插桩，对内核函数/合法指令进行跟踪.</p>
 </li>
 <li><input disabled="" type="checkbox" checked=""/>
-<a href="./sys_design/uprobes.html">uprobes</a>
+<p><a href="./sys_impl/probes.html#uprobes">uprobes</a></p>
 <p>完成用户空间指令的动态插桩，对用户态程序中的函数/合法指令进行跟踪.</p>
 </li>
-<li><input disabled="" type="checkbox"/>
-function parameter probing in probes
+<li><input disabled="" type="checkbox" checked=""/>
+<p>function parameter probing in probes</p>
 <p>完成probes对函数参数的获取.</p>
 </li>
-<li><input disabled="" type="checkbox"/>
-async in probes
-<p>完成probes对rust async 函数的跟踪支持.</p>
+<li><input disabled="" type="checkbox" checked=""/>
+<p><a href="./sys_impl/ebpf.html">ebpf</a></p>
+<p>根据ebpf原理实现一个简单的ebpf.</p>
 </li>
 <li><input disabled="" type="checkbox"/>
-ebpf
-<p>根据ebpf原理实现一个简单的ebpf.</p>
+<p>async in probes</p>
+<p>完成probes对rust async 函数的跟踪支持.</p>
 </li>
 </ul>
 
@@ -180,7 +184,7 @@ ebpf
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
 
-                            <a rel="next" href="background/kprobes_uprobes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="background/riscv_insn.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -191,7 +195,7 @@ ebpf
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
 
-                    <a rel="next" href="background/kprobes_uprobes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="background/riscv_insn.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

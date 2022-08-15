@@ -1,8 +1,17 @@
 # 内核及用户态动态跟踪程序
 
-## 内核跟踪库  rkprobes lib
+- [内核跟踪库  rkprobes lib](#内核跟踪库-rkprobes_lib)
+  - [使用说明](#使用说明)
+    - [APIs](#APIs)
+    - [方法](#方法)
+- [rCore中内核及用户态跟踪程序](#rCore中内核及用户态跟踪程序)
+  - [kprobes](#kprobes)
+  - [uprobes](#uprobes)
+    - [使用方法](#使用方法)
 
-可以在[kprobes的系统设计](./sys_design/kprobes.md)一节看到关于kprobes的实现原理.
+## 内核跟踪库-rkprobes_lib
+
+可以在[kprobes的系统设计](../sys_design/kprobes.md)一节看到关于kprobes的实现原理.
 
 如果单独使用kprobes，kprobes可以单独成为一个lib，方便所有操作系统调用.
 
@@ -122,13 +131,11 @@ fn uprobes_trap_handler(&self, cx: &mut UserContext);
 fn uprobes_init(&self)
 ```
 
-#### 使用说明
+#### 使用方法
 
 如果需要使用uprobes，你需要：
 
 - 注册uprobes.
 - 将uprobes中断处理函数放到内核处理用户态发生的中断的函数中去.
 - 在sys_exec中加入初始化函数`uprobes_init`.
-
-
 

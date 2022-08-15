@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="background/kprobes_uprobes.html"><strong aria-hidden="true">2.1.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="background/rust_async.html"><strong aria-hidden="true">2.2.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="background/eBPF.html"><strong aria-hidden="true">2.3.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_design/kprobes.html"><strong aria-hidden="true">3.1.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="sys_design/uprobes.html"><strong aria-hidden="true">3.2.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="sys_design/async_func.html"><strong aria-hidden="true">3.3.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="sys_design/ebpf.html"><strong aria-hidden="true">3.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_impl/probes.html"><strong aria-hidden="true">4.1.</strong> 动态插桩功能</a></li></ol></li><li class="chapter-item expanded "><a href="log.html"><strong aria-hidden="true">5.</strong> 项目日志</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="background/riscv_insn.html"><strong aria-hidden="true">2.1.</strong> Risc-V指令集</a></li><li class="chapter-item expanded "><a href="background/kprobes_uprobes.html"><strong aria-hidden="true">2.2.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="background/rust_async.html"><strong aria-hidden="true">2.3.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="background/eBPF.html"><strong aria-hidden="true">2.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_design/insn_decode.html"><strong aria-hidden="true">3.1.</strong> Risc-V指令解码</a></li><li class="chapter-item expanded "><a href="sys_design/kprobes.html"><strong aria-hidden="true">3.2.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="sys_design/uprobes.html"><strong aria-hidden="true">3.3.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="sys_design/async_func.html"><strong aria-hidden="true">3.4.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="sys_design/ebpf.html"><strong aria-hidden="true">3.5.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_impl/insn_decode.html"><strong aria-hidden="true">4.1.</strong> Risc-V指令解码功能</a></li><li class="chapter-item expanded "><a href="sys_impl/probes.html"><strong aria-hidden="true">4.2.</strong> 动态插桩功能</a></li><li class="chapter-item expanded "><a href="sys_impl/ebpf.html"><strong aria-hidden="true">4.3.</strong> eBPF实现</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 系统测试及演示程序</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="test&demo/dynamic_probe.html"><strong aria-hidden="true">5.1.</strong> 动态注册eBPF程序测试</a></li></ol></li><li class="chapter-item expanded "><a href="log.html"><strong aria-hidden="true">6.</strong> 项目日志</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -152,29 +152,65 @@
 <li><a href="https://github.com/latte-c/rCore/tree/bpf">latte-c/rCore at bpf </a>，其中kprobes与uprobes给eBPF提供跟踪点功能.</li>
 </ul>
 <h2 id="具体目标"><a class="header" href="#具体目标">具体目标</a></h2>
-<p>ebpf in rust 目前有五个主要目标</p>
+<p>ebpf in rust 目前几个主要目标</p>
 <ul>
 <li><input disabled="" type="checkbox" checked=""/>
-<p><a href="./sys_design/kprobes.html">kprobes</a></p>
+<p><a href="./sys_impl/insn_decode.html">riscv_insn_decode</a></p>
+<p>解码riscv指令，对其进行跟踪合法性分析.</p>
+</li>
+<li><input disabled="" type="checkbox" checked=""/>
+<p><a href="./sys_impl/probes.html#%E5%86%85%E6%A0%B8%E8%B7%9F%E8%B8%AA%E5%BA%93-rkprobes_lib">kprobes</a></p>
 <p>完成内核空间指令的动态插桩，对内核函数/合法指令进行跟踪.</p>
 </li>
 <li><input disabled="" type="checkbox" checked=""/>
-<p><a href="./sys_design/uprobes.html">uprobes</a></p>
+<p><a href="./sys_impl/probes.html#uprobes">uprobes</a></p>
 <p>完成用户空间指令的动态插桩，对用户态程序中的函数/合法指令进行跟踪.</p>
 </li>
-<li><input disabled="" type="checkbox"/>
+<li><input disabled="" type="checkbox" checked=""/>
 <p>function parameter probing in probes</p>
 <p>完成probes对函数参数的获取.</p>
+</li>
+<li><input disabled="" type="checkbox" checked=""/>
+<p><a href="./sys_impl/ebpf.html">ebpf</a></p>
+<p>根据ebpf原理实现一个简单的ebpf.</p>
 </li>
 <li><input disabled="" type="checkbox"/>
 <p>async in probes</p>
 <p>完成probes对rust async 函数的跟踪支持.</p>
 </li>
-<li><input disabled="" type="checkbox"/>
-<p>ebpf</p>
-<p>根据ebpf原理实现一个简单的ebpf.</p>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="risc-v"><a class="header" href="#risc-v">Risc-V</a></h1>
+<ul>
+<li><a href="background/riscv_insn.html#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="background/riscv_insn.html#%E6%8C%87%E4%BB%A4%E9%9B%86">指令集</a>
+<ul>
+<li><a href="background/riscv_insn.html#%E6%8C%87%E4%BB%A4%E9%9B%86%E7%BB%84%E6%88%90">指令集组成</a></li>
+<li><a href="background/riscv_insn.html#%E5%8E%8B%E7%BC%A9%E6%8C%87%E4%BB%A4">压缩指令</a></li>
+<li><a href="background/riscv_insn.html#%E8%AF%A6%E7%BB%86%E6%8C%87%E4%BB%A4%E5%8F%82%E8%80%83%E5%8D%A1%E7%89%87">详细指令参考卡片</a></li>
+<li><a href="background/riscv_insn.html#%E5%AF%84%E5%AD%98%E5%99%A8">寄存器</a></li>
+</ul>
 </li>
 </ul>
+<h2 id="简介"><a class="header" href="#简介">简介</a></h2>
+<p><strong>RISC-V</strong>是一个基于精简指令集（RISC）原则的开源指令集架构（ISA）。</p>
+<p>与大多数指令集相比，RISC-V指令集可以自由地用于任何目的，允许任何人设计、制造和销售RISC-V芯片和软件。虽然这不是第一个开源指令集，但它具有重要意义，因为其设计使其适用于现代计算设备（如仓库规模云计算机、高端移动电话和微小嵌入式系统）。设计者考虑到了这些用途中的性能与功率效率。该指令集还具有众多支持的软件，这解决了新指令集通常的弱点。</p>
+<h2 id="指令集"><a class="header" href="#指令集">指令集</a></h2>
+<h3 id="指令集组成"><a class="header" href="#指令集组成">指令集组成</a></h3>
+<p>RISC-V采用模块化的指令集，易于扩展、组装。</p>
+<p>RISCV ISA = 1 个基本整数指令集（I） + 多个可选的扩展指令集</p>
+<p>其中唯一强制要求实现的基础指令集，其他指令集都是可选的扩展模块。RISC-V 允许在实现中以可选的形式实现其他标准化和非标准化的指令集扩展。
+RISC-V指令集模块包括：</p>
+<p><img src="background/../img/riscv-insn1.png" alt="" /></p>
+<h4 id="压缩指令"><a class="header" href="#压缩指令">压缩指令</a></h4>
+<p>RV32C 采用了一种新颖的方法：每条短指令必须和一条标准的 32 位 RISC-V 指令一一 对应。此外，16 位指令只对汇编器和链接器可见，并且是否以短指令取代对应的宽指令由 它们决定。编译器编写者和汇编语言程序员可以幸福地忽略 RV32C 指令及其格式，他们能 感知到的则是最后的程序大小小于大多数其它 ISA 的程序。图是 RV32C 扩展指令集的 图形化表示。</p>
+<p><img src="background/../img/riscv-insn5.jpg" alt="" /></p>
+<p>为了能在一系列的程序上得到良好的代码压缩效果，RISC-V 架构师精心挑选了 RVC 扩展中的指令。同时，基于以下的三点观察，架构师们成功地将指令压缩到了 16 位。第 一，对十个常用寄存器（a0-a5，s0-s1，sp 以及 ra）访问的频率远超过其他寄存器；第 二，许多指令的写入目标是它的源操作数之一；第三，立即数往往很小，而且有些指令比 较喜欢某些特定的立即数。因此，许多 RV32C 指令只能访问那些常用寄存器；一些指令隐 式写入源操作数的位置；几乎所有的立即数都被缩短了，load 和 store 操作只使用操作数整 数倍尺寸的无符号数偏移量。</p>
+<h3 id="详细指令参考卡片"><a class="header" href="#详细指令参考卡片">详细指令参考卡片</a></h3>
+<p><img src="background/../img/riscv-insn2.jpg" alt="" /></p>
+<p><img src="background/../img/riscv-insn3.png" alt="" /></p>
+<h3 id="寄存器"><a class="header" href="#寄存器">寄存器</a></h3>
+<p>RISC-V 有足够多的寄存器来达到两全其美的结果：既能将操作数存放在寄存器中，同 时也能减少保存和恢复寄存器的次数。其中的关键在于，在函数调用的过程中不保留部分寄 存器存储的值，称它们为临时寄存器；另一些寄存器则对应地称为保存寄存器。不再调用其 它函数的函数称为叶函数。当一个叶函数只有少量的参数和局部变量时，它们可以都被存储 在寄存器中，而不会“溢出（spilling）”到内存中。但如果函数参数和局部变量很多，程序 还是需要把寄存器的值保存在内存中，不过这种情况并不多见。</p>
+<p><img src="background/../img/riscv-insn4.png" alt="" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="linux中的kprobes与uprobes"><a class="header" href="#linux中的kprobes与uprobes">Linux中的kprobes与uprobes</a></h1>
 <h2 id="kprobes"><a class="header" href="#kprobes">kprobes</a></h2>
 <p>开发人员在内核或者模块的调试过程中，往往会需要要知道其中的一些函数有无被调用、何时被调用、执行是否正确以及函数的入参和返回值是什么等等。比较简单的做法是在内核代码对应的函数中添加日志打印信息，但这种方式往往需要重新编译内核或模块，重新启动设备之类的，操作较为复杂甚至可能会破坏原有的代码执行过程。</p>
@@ -182,7 +218,7 @@
 <h2 id="uprobes"><a class="header" href="#uprobes">uprobes</a></h2>
 <p>uprobes 是Linux提供用户态的动态探针，合并于2012年7月发布的 Linux 3.5 内核中。uprobes 和 kprobes 十分相似，只不过用在用户态而已。 uprobes 可以检测到用户态函数入口和出口的位置。uprobes 工作原理和 kprobes 差不多，它会在目标位置插入一个断点，这样当程序执行流执行到这个地方会去执行我们设置的 uprobe handle。当我们不再不需探测和收集信息时候，可以移除断点恢复原状。</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="rust-异步并发"><a class="header" href="#rust-异步并发">Rust 异步并发</a></h1>
-<h2 id="简介"><a class="header" href="#简介">简介</a></h2>
+<h2 id="简介-1"><a class="header" href="#简介-1">简介</a></h2>
 <p>在当前的 rust 生态中，我们可以使用async/await来将异步函数按照同步函数的格式一样书写，使代码更加整洁，易于维护。</p>
 <h2 id="future并发模式"><a class="header" href="#future并发模式">Future并发模式</a></h2>
 <p>Future异步并发模式是以代理模式和异步开发的混合产物，future是对将来的一种代理凭证，凭借这个凭证可以异步地在未来某个时刻得到确定的结果。</p>
@@ -219,14 +255,142 @@
 <h2 id="asyncawait"><a class="header" href="#asyncawait">async/await</a></h2>
 <p>async：产生一个 Future 对象，一个没有任何作用的对象，必须由调用器调用才会有用。
 await: 等待异步操作完成（基于语义理解，其实很多情况只有调用 future.await 才是事实上去调用，具体是不是之前就开始执行，这个要看我们的调用器是什么），这步是阻塞当前线程，这个语法属于 Future 对象才能调用，而且必须要在 async 函数内。</p>
-<h2 id="具体实现原理仍在继续理解调查中"><a class="header" href="#具体实现原理仍在继续理解调查中">具体实现原理（仍在继续理解调查中）</a></h2>
+<h2 id="具体实现原理"><a class="header" href="#具体实现原理">具体实现原理</a></h2>
 <p>async块会生成一个Generator&lt;Yield=()&gt;的生成器，然后将该生成器通过单元结构体GenFuture进行包装，最后为该GenFuture实现Future</p>
 <p>await!展开的代码会在loop循环中进行判断，如果是Ready则退出。</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="linux中的ebpf仍需继续了解"><a class="header" href="#linux中的ebpf仍需继续了解">Linux中的eBPF（仍需继续了解）</a></h1>
-<h1 id="简介-1"><a class="header" href="#简介-1">简介</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="linux中的ebpf"><a class="header" href="#linux中的ebpf">Linux中的eBPF</a></h1>
+<ul>
+<li><a href="background/eBPF.html#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="background/eBPF.html#ebpf%E6%8C%87%E4%BB%A4%E9%9B%86">eBPF指令集</a>
+<ul>
+<li><a href="background/eBPF.html#%E5%AF%84%E5%AD%98%E5%99%A8%E4%B8%8E%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A">寄存器与调用约定</a></li>
+<li><a href="background/eBPF.html#%E6%8C%87%E4%BB%A4%E7%BC%96%E7%A0%81">指令编码</a></li>
+</ul>
+</li>
+<li><a href="background/eBPF.html#ebpf%E9%AA%8C%E8%AF%81%E5%99%A8">eBPF验证器</a></li>
+<li><a href="background/eBPF.html#ebpf_helpers">eBPF helpers</a></li>
+<li><a href="background/eBPF.html#ebpf_maps">eBPF maps</a></li>
+</ul>
+<h1 id="简介-2"><a class="header" href="#简介-2">简介</a></h1>
 <p>eBPF 源于 BPF，本质上是处于内核中的一个高效与灵活的虚类虚拟机组件，以一种安全的方式在许多内核 hook 点执行字节码。BPF 最初的目的是用于高效网络报文过滤，经过重新设计，eBPF 不再局限于网络协议栈，已经成为内核顶级的子系统，演进为一个通用执行引擎。开发者可基于 eBPF 开发性能分析工具、软件定义网络、安全等诸多场景。</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="kprobes-1"><a class="header" href="#kprobes-1">kprobes</a></h1>
+<h2 id="ebpf指令集"><a class="header" href="#ebpf指令集">eBPF指令集</a></h2>
+<h3 id="寄存器与调用约定"><a class="header" href="#寄存器与调用约定">寄存器与调用约定</a></h3>
+<p>eBPF 有10个通用寄存器和一个只读栈帧寄存器，它们均为64位。</p>
+<p>eBPF 调用规则定义为：</p>
+<ul>
+<li>R0：函数调用的返回值和 eBPF 程序的退出值</li>
+<li>R1 - R5：函数调用的参数</li>
+<li>R6 - R9：被调用方保存的寄存器，函数调用将保留这些寄存器</li>
+<li>R10：访问堆栈的只读栈帧指针</li>
+</ul>
+<p>R0 - R5 是暂存寄存器，如有必要，eBPF 程序需要在调用之间溢出/填充它们。</p>
+<h3 id="指令编码"><a class="header" href="#指令编码">指令编码</a></h3>
+<p>eBPF 有两种指令编码：</p>
+<ul>
+<li>基本指令编码，使用 64 位对指令进行编码</li>
+<li>宽指令编码，它在基本指令之后附加第二个 64 位即时值 （imm64），总共 128 位。</li>
+</ul>
+<p>基本指令编码如下所示：</p>
+<table><thead><tr><th>32 位 （MSB）</th><th>16 位</th><th>4 位</th><th>4 位</th><th>8 位 （LSB）</th></tr></thead><tbody>
+<tr><td>立即数</td><td>偏移</td><td>源寄存器</td><td>目标寄存器</td><td>操作码</td></tr>
+</tbody></table>
+<p>请注意，大多数说明不会使用所有字段。未使用的字段应清除为零。</p>
+<h2 id="ebpf验证器"><a class="header" href="#ebpf验证器">eBPF验证器</a></h2>
+<p>eBPF计划的安全性分两步确定。</p>
+<p>第一步执行 DAG 检查以禁止循环和其他 CFG 验证。特别是，它将检测具有无法访问的指令的程序。（尽管传统的 BPF 检查器允许它们）</p>
+<p>第二步从第一个 指令 开始，并下降所有可能的路径。它模拟每个 指令 的执行，并观察寄存器和堆栈的状态变化。</p>
+<p>在程序开始时，寄存器R1包含一个指向上下文的指针，其类型为PTR_TO_CTX。如果验证者看到一个执行 R2=R1 的指令，则 R2 现在也具有类型 PTR_TO_CTX并且可以在表达式的右侧使用。如果 R1=PTR_TO_CTX指令 为 R2=R1+R1，则 R2=SCALAR_VALUE，因为添加两个有效指针会使指针无效。（在“安全”模式下，验证程序将拒绝任何类型的指针算术，以确保内核地址不会泄露给非特权用户）</p>
+<h2 id="ebpf_helpers"><a class="header" href="#ebpf_helpers">eBPF_helpers</a></h2>
+<p>ebpf的帮助函数，在eBPF程序中，只可调用这些函数</p>
+<h2 id="ebpf_maps"><a class="header" href="#ebpf_maps">eBPF_maps</a></h2>
+<p>maps是一个不同类型的通用存储方式，用于在内核和用户空间之间共享数据。</p>
+<p>更多eBPF信息可查看：<a href="https://www.kernel.org/doc/html/latest/bpf/index.html">BPF Documentation — The Linux Kernel documentation</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="指令解码"><a class="header" href="#指令解码">指令解码</a></h1>
+<h2 id="设计理念"><a class="header" href="#设计理念">设计理念</a></h2>
+<p>k/uprobes在插桩时</p>
+<ul>
+<li>对于指令的插桩需要考虑指令的合法性判断</li>
+<li>在函数跟踪时需要解析出栈帧变化的大小</li>
+</ul>
 <h2 id="设计思路"><a class="header" href="#设计思路">设计思路</a></h2>
+<h3 id="指令合法性判断"><a class="header" href="#指令合法性判断">指令合法性判断</a></h3>
+<p>根据Linux里Kprobes关于Riscv指令的合法性检验，设置指令黑名单，黑名单内的指令不允许跟踪.</p>
+<ul>
+<li>system相关指令</li>
+<li>页表刷新相关指令</li>
+<li>常规指令
+<ul>
+<li>auipc</li>
+<li>branch</li>
+<li>jal</li>
+<li>jalr</li>
+</ul>
+</li>
+<li>压缩指令
+<ul>
+<li>c_j</li>
+<li>c_jr</li>
+<li>c_jal</li>
+<li>c_jalr</li>
+<li>c_beqz</li>
+<li>c_bnez</li>
+<li>c_ebreak</li>
+</ul>
+</li>
+</ul>
+<h3 id="sp相关指令解码"><a class="header" href="#sp相关指令解码">sp相关指令解码</a></h3>
+<p>根据Riscv文档，操作sp相关的指令有</p>
+<ul>
+<li>
+<p>addi</p>
+<pre><code>31               20 19       1514     12 11     7 6         0
+┌──────────────────┬──────────┬─────────┬────────┬─────────┐
+│    imm[11:0]     │    rs1   │   000   │   rd   │ 0010011 │
+└──────────────────┴──────────┴─────────┴────────┴─────────┘
+</code></pre>
+</li>
+<li>
+<p>c.addi</p>
+<pre><code>15    13 12    11 10        7 6               2 1        0
+┌───────┬────────┬───────────┬─────────────────┬─────────┐
+│  011  │ imm[5] │    rd     │    imm[4:0]     │    01   │
+└───────┴────────┴───────────┴─────────────────┴─────────┘
+</code></pre>
+</li>
+<li>
+<p>c.addi16sp</p>
+<pre><code>15    13 12    11 10        7 6                  2 1        0
+┌───────┬────────┬───────────┬────────────────────┬─────────┐
+│  011  │ imm[9] │   00010   │   imm[4|6|8:7|5]   │    01   │
+└───────┴────────┴───────────┴────────────────────┴─────────┘
+</code></pre>
+</li>
+<li>
+<p>c.addi4spn</p>
+<pre><code>15    13 12                 5 4       2 1        0
+┌───────┬────────────────────┬─────────┬─────────┐
+│  000  │  imm[5:4|9:6|2|3]  │   rd'   │    00   │
+└───────┴────────────────────┴─────────┴─────────┘
+</code></pre>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="kprobes-1"><a class="header" href="#kprobes-1">kprobes</a></h1>
+<ul>
+<li><a href="sys_design/kprobes.html#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF">设计思路</a>
+<ul>
+<li><a href="sys_design/kprobes.html#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF">函数跟踪</a></li>
+<li><a href="sys_design/kprobes.html#%E6%8C%87%E4%BB%A4%E8%B7%9F%E8%B8%AA">指令跟踪</a></li>
+<li><a href="sys_design/kprobes.html#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</a></li>
+</ul>
+</li>
+<li><a href="sys_design/kprobes.html#%E6%B5%81%E7%A8%8B%E5%9B%BE">流程图</a>
+<ul>
+<li><a href="sys_design/kprobes.html#%E6%B5%81%E7%A8%8B%E5%9B%BE%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%89%88">流程图数据结构版</a></li>
+<li><a href="sys_design/kprobes.html#%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%A0%86%E6%A0%88%E7%89%88">流程图堆栈版</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="设计思路-1"><a class="header" href="#设计思路-1">设计思路</a></h2>
 <h3 id="函数跟踪"><a class="header" href="#函数跟踪">函数跟踪</a></h3>
 <ol>
 <li>
@@ -303,7 +467,7 @@ await: 等待异步操作完成（基于语义理解，其实很多情况只有�
 <h3 id="流程图堆栈版"><a class="header" href="#流程图堆栈版">流程图堆栈版</a></h3>
 <p><img src="sys_design/../img/kprobes2.png" alt="" /></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="uprobes-1"><a class="header" href="#uprobes-1">Uprobes</a></h1>
-<h2 id="设计思路-1"><a class="header" href="#设计思路-1">设计思路</a></h2>
+<h2 id="设计思路-2"><a class="header" href="#设计思路-2">设计思路</a></h2>
 <h3 id="函数跟踪-1"><a class="header" href="#函数跟踪-1">函数跟踪</a></h3>
 <ol>
 <li>
@@ -385,14 +549,190 @@ await: 等待异步操作完成（基于语义理解，其实很多情况只有�
 <li>跟踪poll的第一次入与出</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="ebpf"><a class="header" href="#ebpf">eBPF</a></h1>
-<p>新建文件夹</p>
+<h2 id="设计思路-3"><a class="header" href="#设计思路-3">设计思路</a></h2>
+<h3 id="解释器"><a class="header" href="#解释器">解释器</a></h3>
+<p>根据字节码，解析出立即数，偏移量，源寄存器，目标寄存器与操作码。</p>
+<p>根据操作码，对寄存器进行操作</p>
+<h3 id="ebpf-helpers"><a class="header" href="#ebpf-helpers">eBPF helpers</a></h3>
+<p>结合rCore自身，设计helper函数</p>
+<h2 id="参考"><a class="header" href="#参考">参考</a></h2>
+<p><a href="https://github.com/NickCao/ebpf-rs">NickCao/ebpf-rs (github.com)</a></p>
+<p><a href="https://elixir.bootlin.com/linux/v5.14.12/source/kernel/bpf">linux bpf impl</a> kernel/bpf  </p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="指令解码-1"><a class="header" href="#指令解码-1">指令解码</a></h1>
+<p>根据Riscv设计文档进行解码.</p>
+<ul>
+<li><a href="sys_impl/insn_decode.html#%E6%8C%87%E4%BB%A4%E5%90%88%E6%B3%95%E6%80%A7%E5%88%A4%E6%96%AD%E5%BA%93">指令合法性判断库</a>
+<ul>
+<li><a href="sys_impl/insn_decode.html#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E">使用说明</a>
+<ul>
+<li><a href="sys_impl/insn_decode.html#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</a>
+<ul>
+<li><a href="sys_impl/insn_decode.html#InsnStatus">InsnStatus</a></li>
+</ul>
+</li>
+<li><a href="sys_impl/insn_decode.html#APIs">APIs</a>
+<ul>
+<li><a href="sys_impl/insn_decode.html#get_insn_length">get_insn_length</a></li>
+<li><a href="sys_impl/insn_decode.html#insn_decode">insn_decode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="sys_impl/insn_decode.html#sp%E7%9B%B8%E5%85%B3%E6%8C%87%E4%BB%A4%E8%A7%A3%E7%A0%81">sp相关指令解码</a>
+<ul>
+<li><a href="sys_impl/insn_decode.html#addi">addi</a></li>
+<li><a href="sys_impl/insn_decode.html#c.addi16sp">c.addi16sp</a></li>
+<li><a href="sys_impl/insn_decode.html#c.addi">c.addi</a></li>
+<li><a href="sys_impl/insn_decode.html#c.addi4spn">c.addi4spn</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="指令合法性判断库"><a class="header" href="#指令合法性判断库">指令合法性判断库</a></h2>
+<p>在已有的riscv-decode库的基础上，增加了压缩指令的解码过程</p>
+<p>将riscv_insn_decode代码解耦合后，独立成库:<a href="https://github.com/hm1229/riscv_insn_decode">riscv_insn_decode</a></p>
+<h3 id="使用说明"><a class="header" href="#使用说明">使用说明</a></h3>
+<p>如果要使用 <code>riscv_insn_decode</code>库,首先需要更新 <code>Cargo.toml</code></p>
+<pre><code class="language-toml">[dependencies]
+riscv_insn_decode = {git = &quot;https://github.com/hm1229/riscv_insn_decode&quot;, rev = &quot;0b954c9&quot;}
+</code></pre>
+<h4 id="数据结构-2"><a class="header" href="#数据结构-2">数据结构</a></h4>
+<h5 id="insnstatus"><a class="header" href="#insnstatus">InsnStatus</a></h5>
+<p>指令是否合法</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[derive(Debug)]
+pub enum InsnStatus {
+    Illegal,
+    Legal,
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h4 id="apis"><a class="header" href="#apis">APIs</a></h4>
+<h5 id="get_insn_length"><a class="header" href="#get_insn_length">get_insn_length</a></h5>
+<p>根据传入的指令地址，返回指令的长度</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use riscv_insn_decode::get_insn_length;
+
+let length = get_insn_length(addr);
+<span class="boring">}
+</span></code></pre></pre>
+<h5 id="insn_decode"><a class="header" href="#insn_decode">insn_decode</a></h5>
+<p>根据传入的指令地址，返回指令是否合法.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use riscv_insn_decode::{insn_decode, InsnStatus};
+
+match insn_decode(addr){
+    InsnStatus::Legal =&gt; {
+        unimplemented!();
+    },
+    InsnStatus::Illegal =&gt; {
+        unimplemented!();
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h2 id="sp相关指令解码-1"><a class="header" href="#sp相关指令解码-1">sp相关指令解码</a></h2>
+<p>根据Riscv文档，解析立即数.</p>
+<h3 id="addi"><a class="header" href="#addi">addi</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let inst = u32::from_le_bytes(slot[..4].try_into().unwrap());
+
+// addi sp, sp, imm
+let addisp = sext(((inst &gt;&gt; 20) &amp; 0b111111111111) as isize, 12) as usize;
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="caddi16sp-imm"><a class="header" href="#caddi16sp-imm">c.addi16sp imm</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn sext(x: isize, size: usize) -&gt; isize {
+    let shift = core::mem::size_of::&lt;isize&gt;() * 8 - size;
+    (x &lt;&lt; shift) &gt;&gt; shift
+}
+
+let inst = u16::from_le_bytes(slot[..2].try_into().unwrap());
+let addisp = sext(
+     ((((inst &gt;&gt; 12) &amp; 0b1) &lt;&lt; 9)
+         + (((inst &gt;&gt; 6) &amp; 0b1) &lt;&lt; 4)
+         + (((inst &gt;&gt; 5) &amp; 0b1) &lt;&lt; 6)
+         + (((inst &gt;&gt; 3) &amp; 0b11) &lt;&lt; 7)
+         + (((inst &gt;&gt; 2) &amp; 0b1) &lt;&lt; 5)) as isize,
+     10,
+) as usize;
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="caddi-sp-imm"><a class="header" href="#caddi-sp-imm">c.addi sp, imm</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn sext(x: isize, size: usize) -&gt; isize {
+    let shift = core::mem::size_of::&lt;isize&gt;() * 8 - size;
+    (x &lt;&lt; shift) &gt;&gt; shift
+}
+
+let inst = u16::from_le_bytes(slot[..2].try_into().unwrap());
+let addisp = sext(
+    ((((inst &gt;&gt; 12) &amp; 0b1) &lt;&lt; 5) + (((inst &gt;&gt; 2) &amp; 0b11111) &lt;&lt; 0)) as isize,
+    6,
+) as usize;
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="caddi4spn"><a class="header" href="#caddi4spn">c.addi4spn</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn sext(x: isize, size: usize) -&gt; isize {
+    let shift = core::mem::size_of::&lt;isize&gt;() * 8 - size;
+    (x &lt;&lt; shift) &gt;&gt; shift
+}
+
+let inst = u16::from_le_bytes(slot[..2].try_into().unwrap());
+let addisp = sext(((((inst &gt;&gt; 11) &amp; 0b111) &lt;&lt; 3)
+    + (((inst &gt;&gt; 7) &amp; 0b1111) &lt;&lt; 5)
+    + (((inst &gt;&gt; 6) &amp; 0b1) &lt;&lt; 1)
+    + (((inst &gt;&gt; 5) &amp; 0b1) &lt;&lt; 2)) as isize,
+    10
+) as usize;
+<span class="boring">}
+</span></code></pre></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="内核及用户态动态跟踪程序"><a class="header" href="#内核及用户态动态跟踪程序">内核及用户态动态跟踪程序</a></h1>
-<h2 id="内核跟踪库--rkprobes-lib"><a class="header" href="#内核跟踪库--rkprobes-lib">内核跟踪库  rkprobes lib</a></h2>
-<p>可以在<a href="sys_impl/./sys_design/kprobes.html">kprobes的系统设计</a>一节看到关于kprobes的实现原理.</p>
+<ul>
+<li><a href="sys_impl/probes.html#%E5%86%85%E6%A0%B8%E8%B7%9F%E8%B8%AA%E5%BA%93-rkprobes_lib">内核跟踪库  rkprobes lib</a>
+<ul>
+<li><a href="sys_impl/probes.html#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E">使用说明</a>
+<ul>
+<li><a href="sys_impl/probes.html#APIs">APIs</a></li>
+<li><a href="sys_impl/probes.html#%E6%96%B9%E6%B3%95">方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="sys_impl/probes.html#rCore%E4%B8%AD%E5%86%85%E6%A0%B8%E5%8F%8A%E7%94%A8%E6%88%B7%E6%80%81%E8%B7%9F%E8%B8%AA%E7%A8%8B%E5%BA%8F">rCore中内核及用户态跟踪程序</a>
+<ul>
+<li><a href="sys_impl/probes.html#kprobes">kprobes</a></li>
+<li><a href="sys_impl/probes.html#uprobes">uprobes</a>
+<ul>
+<li><a href="sys_impl/probes.html#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">使用方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="内核跟踪库-rkprobes_lib"><a class="header" href="#内核跟踪库-rkprobes_lib">内核跟踪库-rkprobes_lib</a></h2>
+<p>可以在<a href="sys_impl/../sys_design/kprobes.html">kprobes的系统设计</a>一节看到关于kprobes的实现原理.</p>
 <p>如果单独使用kprobes，kprobes可以单独成为一个lib，方便所有操作系统调用.</p>
 <p>lib: github<a href="https://github.com/hm1229/rkprobes">仓库.</a></p>
-<h3 id="使用说明"><a class="header" href="#使用说明">使用说明</a></h3>
-<h4 id="apis"><a class="header" href="#apis">APIs</a></h4>
+<h3 id="使用说明-1"><a class="header" href="#使用说明-1">使用说明</a></h3>
+<h4 id="apis-1"><a class="header" href="#apis-1">APIs</a></h4>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -518,14 +858,305 @@ rkprobes::kprobe_register(
 </span>fn uprobes_init(&amp;self)
 <span class="boring">}
 </span></code></pre></pre>
-<h4 id="使用说明-1"><a class="header" href="#使用说明-1">使用说明</a></h4>
+<h4 id="使用方法"><a class="header" href="#使用方法">使用方法</a></h4>
 <p>如果需要使用uprobes，你需要：</p>
 <ul>
 <li>注册uprobes.</li>
 <li>将uprobes中断处理函数放到内核处理用户态发生的中断的函数中去.</li>
 <li>在sys_exec中加入初始化函数<code>uprobes_init</code>.</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="ebpf-1"><a class="header" href="#ebpf-1">eBPF</a></h1>
+<ul>
+<li><a href="sys_impl/ebpf.html#%E8%A7%A3%E9%87%8A%E5%99%A8">解释器</a>
+<ul>
+<li><a href="sys_impl/ebpf.html#%E6%8C%87%E4%BB%A4%E8%A7%A3%E7%A0%81">指令解码</a></li>
+<li><a href="sys_impl/ebpf.html#%E6%8C%87%E4%BB%A4%E7%9A%84%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C">指令的模拟执行</a>
+<ul>
+<li><a href="sys_impl/ebpf.html#%E7%AE%97%E6%95%B0%E6%8C%87%E4%BB%A4">算数指令</a></li>
+<li><a href="sys_impl/ebpf.html#%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4">跳转指令</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="sys_impl/ebpf.html#ebpf-helpers">eBPF helpers</a></li>
+</ul>
+<h2 id="解释器-1"><a class="header" href="#解释器-1">解释器</a></h2>
+<h3 id="指令解码-2"><a class="header" href="#指令解码-2">指令解码</a></h3>
+<p>通过pc指针，获取当前指令，将其拆分为立即数，偏移量，源寄存器，目标寄存器，操作码</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>let inst = insts[pc as usize];
+pc += 1;
+let imm: i32 = ((inst &gt;&gt; 32) &amp; u32::MAX as u64) as i32;
+let off: i16 = ((inst &gt;&gt; 16) &amp; u16::MAX as u64) as i16;
+let src: usize = ((inst &gt;&gt; 12) &amp; 0x0f) as usize;
+let dst: usize = ((inst &gt;&gt; 8) &amp; 0x0f) as usize;
+let op: u8 = (inst &amp; u8::MAX as u64) as u8;
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="指令的模拟执行"><a class="header" href="#指令的模拟执行">指令的模拟执行</a></h3>
+<p>由于eBPF指令较多，在此只展示部分指令的模拟执行过程.</p>
+<h4 id="算数指令"><a class="header" href="#算数指令">算数指令</a></h4>
+<blockquote>
+<p>根据源操作数的不同又分为：</p>
+<ul>
+<li>
+<p>BPF_K</p>
+<p>使用 32 位即时作为源操作数</p>
+</li>
+<li>
+<p>BPF_X</p>
+<p>使用<code>src_reg</code>寄存器作为源操作数</p>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p>add</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>ALU_K_ADD =&gt; reg[dst] = (reg[dst] as i32).wrapping_add(imm) as u64,
+ALU_X_ADD =&gt; reg[dst] = (reg[dst] as i32).wrapping_add(reg[src] as i32) as u64,
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>or</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>ALU_K_OR =&gt; reg[dst] = (reg[dst] as u32 | imm as u32) as u64,
+ALU_X_OR =&gt; reg[dst] = (reg[dst] as u32 | reg[src] as u32) as u64,
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>etc.</p>
+</li>
+</ul>
+<h4 id="跳转指令"><a class="header" href="#跳转指令">跳转指令</a></h4>
+<ul>
+<li>
+<p>call</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>JMP_K_CALL =&gt; unsafe {
+    reg[0] = helpers[imm as usize](reg[1], reg[2], reg[3], reg[4], reg[5]);
+},
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>jlt</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>JMP_K_JLT =&gt; {
+    if reg[dst] &lt; imm as u64 {
+        pc = (pc as i16 + off) as u16;
+    }
+}
+JMP_X_JLT =&gt; {
+    if reg[dst] &lt; reg[src] {
+        pc = (pc as i16 + off) as u16;
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>etc.</p>
+</li>
+</ul>
+<h2 id="ebpf-helpers-1"><a class="header" href="#ebpf-helpers-1">eBPF-helpers</a></h2>
+<p>eBPF的帮助函数是与操作系统息息相关的，因为目前暂未实现map，所以只有少量帮助函数可用：</p>
+<ul>
+<li>
+<p><code>bpf_ktime_get_ns</code></p>
+<p>打印当前时间</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// u64 bpf_ktime_get_ns(void)
+// return current ktime
+fn bpf_ktime_get_ns(_1: u64, _2: u64, _3: u64, _4: u64, _5: u64) -&gt; u64 {
+    crate::arch::timer::timer_now().as_nanos() as u64
+}
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p><code>bpf_trace_printk</code></p>
+<p>打印输出</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// long bpf_trace_printk(const char *fmt, u32 fmt_size, ...)
+unsafe fn bpf_trace_printk(fmt: u64, fmt_size: u64, p1: u64, p2: u64, p3: u64) -&gt; u64 {
+    let fmt = core::slice::from_raw_parts(fmt as *const u8, fmt_size as u32 as usize);
+    println!(
+        &quot;{}&quot;,
+        dyn_fmt::Arguments::new(core::str::from_utf8_unchecked(fmt), &amp;[format!(&quot;{:#x}&quot;, p1), format!(&quot;{}&quot;, p2), format!(&quot;{}&quot;, p3)])
+    );
+    0
+}
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p><code>bpf_get_current_pid_tgid</code></p>
+<p>返回进程id</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn bpf_get_current_pid_tgid(_1: u64, _2: u64, _3: u64, _4: u64, _5: u64) -&gt; u64 {
+    let thread = current_thread().unwrap();
+    let pid = thread.proc.busy_lock().pid.get() as u64;
+    // NOTE: tgid is the same with pid
+    (pid &lt;&lt; 32) | pid
+}
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="动态注册ebpf程序测试"><a class="header" href="#动态注册ebpf程序测试">动态注册eBPF程序测试</a></h1>
+<h2 id="测试准备"><a class="header" href="#测试准备">测试准备</a></h2>
+<h3 id="ebpf-demo"><a class="header" href="#ebpf-demo">eBPF demo</a></h3>
+<p>实现了一个小的eBPF程序，只负责打印输出寄存器中的<code>sepc</code>值</p>
+<pre><code class="language-c">int prog(struct TrapFrame* cx) {
+    char fmt[] = &quot;from ebpf: the probed address is {}&quot;;
+    bpf_trace_printk(fmt, 37, cx-&gt;sepc, 0, 0);
+    return 0;
+}
+</code></pre>
+<h3 id="用户态程序"><a class="header" href="#用户态程序">用户态程序</a></h3>
+<h4 id="ebpf插桩程序"><a class="header" href="#ebpf插桩程序">eBPF插桩程序</a></h4>
+<p>该程序主要负责接收用户的动态注册要求，通过系统调用的方式在内核态进行注册，注册完成会返回注册提示。</p>
+<p>交互部分代码省略，系统调用注册部分代码：</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//rust/ebpf
+fn syscall_ebpf(addr: String, tp: u16, path: String){
+    let prog = include_bytes!(&quot;hello.bin&quot;);
+    if sys_register_ebpf(
+        usize::from_str_radix(&amp;addr, 16).unwrap(),
+        prog as *const u8,
+        prog.len(),
+        tp as usize,
+        path.as_ptr()
+    ) == 0
+    {
+        println!(&quot;hook successful&quot;);
+    } else {
+        println!(&quot;hook failed&quot;);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h4 id="用户态动态插桩测试程序"><a class="header" href="#用户态动态插桩测试程序">用户态动态插桩测试程序</a></h4>
+<p>该程序只用来调用两个函数：</p>
+<pre><pre class="playground"><code class="language-rust">//rust/test_uprobes
+pub fn main(){
+    test_uprobes1();
+    test_uprobes2();
+}
+
+#[inline(never)]
+fn test_uprobes1(){
+    println!(&quot;uprobes1!&quot;);
+}
+
+#[inline(never)]
+fn test_uprobes2(){
+    println!(&quot;uprobes2!&quot;);
+}
+</code></pre></pre>
+<h2 id="测试"><a class="header" href="#测试">测试</a></h2>
+<h3 id="测试步骤"><a class="header" href="#测试步骤">测试步骤</a></h3>
+<ol>
+<li>进行内核eBPF注册程序(<code>ebpf::arm</code>)的函数跟踪插桩</li>
+<li>进行用户态测试程序(<code>test_uprobes::test_uprobes1</code>)的指令跟踪插桩</li>
+<li>解除内核eBPF注册程序(<code>ebpf::arm</code>)的插桩</li>
+<li>进行用户态测试程序(<code>test_uprobes::test_uprobes2</code>)的函数跟踪插桩</li>
+<li>运行用户态测试程序(<code>test_uprobes</code>)</li>
+</ol>
+<h3 id="结果展示"><a class="header" href="#结果展示">结果展示</a></h3>
+<p><img src="test&amp;demo/../img/demo.png" alt="" /></p>
+<h3 id="结果解析"><a class="header" href="#结果解析">结果解析</a></h3>
+<ol>
+<li>
+<p>在进行用户态测试程序(<code>test_uprobes::test_uprobes1</code>)的指令跟踪插桩后，会有输出:</p>
+<pre><code>from ebpf: the probed address is 0xffffffffc0248cc6
+post_handler: spec:0xffffffffc0bc5750
+</code></pre>
+<p>说明内核态程序可以正常动态跟踪，eBPF程序可以正常运行。</p>
+</li>
+<li>
+<p>在第二次进行用户态测试程序(<code>test_uprobes::test_uprobes2</code>)的指令跟踪插桩后，没有输出，说明跟踪可以正常解除</p>
+</li>
+<li>
+<p>在最后运行<code>test_uprobes</code>时，<code>uprobes1!</code>的输出在<code>post_handler</code>前，<code>uprobes2!</code>的输出在<code>from ebpf...</code>与<code>post_handler</code>中间，说明用户态程序可以正常跟踪且指令和函数的跟踪均可以正常运行。</p>
+</li>
+</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="开发日志"><a class="header" href="#开发日志">开发日志</a></h1>
+<h3 id="815"><a class="header" href="#815">8.15</a></h3>
+<p>继续尝试根据符号表信息查找函数地址，发现需要修改虚拟分页等一系列代码，暂时搁置。</p>
+<p>内核函数插桩恢复为地址插桩。</p>
+<h3 id="814"><a class="header" href="#814">8.14</a></h3>
+<p>重构用户态演示程序，使其支持多种类型的跟踪。</p>
+<p>重构ebpf::arm程序与演示程序对接。</p>
+<p>尝试通过rCore内已有的符号表获取模块实现通过函数名查找函数地址的功能，没成功。</p>
+<h3 id="813"><a class="header" href="#813">8.13</a></h3>
+<p>完成demo ebpf测试程序。</p>
+<p>测试demo.c，ebpfrv解释器可以正常解析并运行</p>
+<h3 id="812"><a class="header" href="#812">8.12</a></h3>
+<p>使用小型的ebpfrv作为代替</p>
+<p>完成k/uprobes的代码重构，整合重复代码，使接口更为易用</p>
+<h3 id="811"><a class="header" href="#811">8.11</a></h3>
+<p>错误详情：</p>
+<ul>
+<li>
+<p>在user下用<code>b.sh</code></p>
+<p><img src="C:%5CUsers%5Cqq171%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220811145245415.png" alt="image-20220811145245415" /></p>
+</li>
+<li>
+<p>启动kernel<code>make run ARCH=riscv64 LOG=warn</code></p>
+</li>
+<li>
+<p>在kernel中启动<code>./busybox</code>可以正常运行</p>
+<p><img src="C:%5CUsers%5Cqq171%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220811151103255.png" alt="image-20220811151103255" /></p>
+</li>
+<li>
+<p>运行<code>./bmonitor</code>就会报页错误：</p>
+<p><img src="C:%5CUsers%5Cqq171%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220811151133996.png" alt="image-20220811151133996" /></p>
+</li>
+</ul>
+<h3 id="88"><a class="header" href="#88">8.8</a></h3>
+<p>排查bmonitor启动失败的原因</p>
+<ul>
+<li>报错：panicked at 'page fault handle failed'</li>
+<li>尝试启动其它用户态程序：可以正常启动</li>
+<li>只有bmonitor与bpf-test启动时会报错误</li>
+</ul>
+<h3 id="730"><a class="header" href="#730">7.30</a></h3>
+<p>bmonitor启动不起来</p>
+<p>迁移方案：</p>
+<ul>
+<li>kprobe-&gt;kprobe:insn</li>
+<li>kretprobe-&gt;kprobe:syncfunc</li>
+</ul>
+<p>新增</p>
+<ul>
+<li>uprobe:insn</li>
+<li>uprobe:syncfunc</li>
+</ul>
+<h3 id="723"><a class="header" href="#723">7.23</a></h3>
+<p>完成ebpf模块</p>
+<p>针对不同实现方法的kprobe进行设计</p>
 <h3 id="531"><a class="header" href="#531">5.31</a></h3>
 <p>完成初赛技术报告.</p>
 <h3 id="529"><a class="header" href="#529">5.29</a></h3>

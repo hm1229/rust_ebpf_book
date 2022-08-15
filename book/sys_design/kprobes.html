@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../background/kprobes_uprobes.html"><strong aria-hidden="true">2.1.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="../background/rust_async.html"><strong aria-hidden="true">2.2.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="../background/eBPF.html"><strong aria-hidden="true">2.3.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_design/kprobes.html" class="active"><strong aria-hidden="true">3.1.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/uprobes.html"><strong aria-hidden="true">3.2.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/async_func.html"><strong aria-hidden="true">3.3.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="../sys_design/ebpf.html"><strong aria-hidden="true">3.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_impl/probes.html"><strong aria-hidden="true">4.1.</strong> 动态插桩功能</a></li></ol></li><li class="chapter-item expanded "><a href="../log.html"><strong aria-hidden="true">5.</strong> 项目日志</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../background/riscv_insn.html"><strong aria-hidden="true">2.1.</strong> Risc-V指令集</a></li><li class="chapter-item expanded "><a href="../background/kprobes_uprobes.html"><strong aria-hidden="true">2.2.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="../background/rust_async.html"><strong aria-hidden="true">2.3.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="../background/eBPF.html"><strong aria-hidden="true">2.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_design/insn_decode.html"><strong aria-hidden="true">3.1.</strong> Risc-V指令解码</a></li><li class="chapter-item expanded "><a href="../sys_design/kprobes.html" class="active"><strong aria-hidden="true">3.2.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/uprobes.html"><strong aria-hidden="true">3.3.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/async_func.html"><strong aria-hidden="true">3.4.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="../sys_design/ebpf.html"><strong aria-hidden="true">3.5.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_impl/insn_decode.html"><strong aria-hidden="true">4.1.</strong> Risc-V指令解码功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/probes.html"><strong aria-hidden="true">4.2.</strong> 动态插桩功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/ebpf.html"><strong aria-hidden="true">4.3.</strong> eBPF实现</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 系统测试及演示程序</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../test&demo/dynamic_probe.html"><strong aria-hidden="true">5.1.</strong> 动态注册eBPF程序测试</a></li></ol></li><li class="chapter-item expanded "><a href="../log.html"><strong aria-hidden="true">6.</strong> 项目日志</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -143,6 +143,21 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="kprobes"><a class="header" href="#kprobes">kprobes</a></h1>
+<ul>
+<li><a href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF">设计思路</a>
+<ul>
+<li><a href="#%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF">函数跟踪</a></li>
+<li><a href="#%E6%8C%87%E4%BB%A4%E8%B7%9F%E8%B8%AA">指令跟踪</a></li>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</a></li>
+</ul>
+</li>
+<li><a href="#%E6%B5%81%E7%A8%8B%E5%9B%BE">流程图</a>
+<ul>
+<li><a href="#%E6%B5%81%E7%A8%8B%E5%9B%BE%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E7%89%88">流程图数据结构版</a></li>
+<li><a href="#%E6%B5%81%E7%A8%8B%E5%9B%BE%E5%A0%86%E6%A0%88%E7%89%88">流程图堆栈版</a></li>
+</ul>
+</li>
+</ul>
 <h2 id="设计思路"><a class="header" href="#设计思路">设计思路</a></h2>
 <h3 id="函数跟踪"><a class="header" href="#函数跟踪">函数跟踪</a></h3>
 <ol>
@@ -224,7 +239,7 @@
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../background/eBPF.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../sys_design/insn_decode.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
@@ -238,7 +253,7 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../background/eBPF.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../sys_design/insn_decode.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 

@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="background/kprobes_uprobes.html"><strong aria-hidden="true">2.1.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="background/rust_async.html"><strong aria-hidden="true">2.2.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="background/eBPF.html"><strong aria-hidden="true">2.3.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_design/kprobes.html"><strong aria-hidden="true">3.1.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="sys_design/uprobes.html"><strong aria-hidden="true">3.2.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="sys_design/async_func.html"><strong aria-hidden="true">3.3.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="sys_design/ebpf.html"><strong aria-hidden="true">3.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_impl/probes.html"><strong aria-hidden="true">4.1.</strong> 动态插桩功能</a></li></ol></li><li class="chapter-item expanded "><a href="log.html" class="active"><strong aria-hidden="true">5.</strong> 项目日志</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="background/riscv_insn.html"><strong aria-hidden="true">2.1.</strong> Risc-V指令集</a></li><li class="chapter-item expanded "><a href="background/kprobes_uprobes.html"><strong aria-hidden="true">2.2.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="background/rust_async.html"><strong aria-hidden="true">2.3.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="background/eBPF.html"><strong aria-hidden="true">2.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_design/insn_decode.html"><strong aria-hidden="true">3.1.</strong> Risc-V指令解码</a></li><li class="chapter-item expanded "><a href="sys_design/kprobes.html"><strong aria-hidden="true">3.2.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="sys_design/uprobes.html"><strong aria-hidden="true">3.3.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="sys_design/async_func.html"><strong aria-hidden="true">3.4.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="sys_design/ebpf.html"><strong aria-hidden="true">3.5.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="sys_impl/insn_decode.html"><strong aria-hidden="true">4.1.</strong> Risc-V指令解码功能</a></li><li class="chapter-item expanded "><a href="sys_impl/probes.html"><strong aria-hidden="true">4.2.</strong> 动态插桩功能</a></li><li class="chapter-item expanded "><a href="sys_impl/ebpf.html"><strong aria-hidden="true">4.3.</strong> eBPF实现</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 系统测试及演示程序</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="test&demo/dynamic_probe.html"><strong aria-hidden="true">5.1.</strong> 动态注册eBPF程序测试</a></li></ol></li><li class="chapter-item expanded "><a href="log.html" class="active"><strong aria-hidden="true">6.</strong> 项目日志</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -143,6 +143,60 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="开发日志"><a class="header" href="#开发日志">开发日志</a></h1>
+<h3 id="815"><a class="header" href="#815">8.15</a></h3>
+<p>继续尝试根据符号表信息查找函数地址，发现需要修改虚拟分页等一系列代码，暂时搁置。</p>
+<p>内核函数插桩恢复为地址插桩。</p>
+<h3 id="814"><a class="header" href="#814">8.14</a></h3>
+<p>重构用户态演示程序，使其支持多种类型的跟踪。</p>
+<p>重构ebpf::arm程序与演示程序对接。</p>
+<p>尝试通过rCore内已有的符号表获取模块实现通过函数名查找函数地址的功能，没成功。</p>
+<h3 id="813"><a class="header" href="#813">8.13</a></h3>
+<p>完成demo ebpf测试程序。</p>
+<p>测试demo.c，ebpfrv解释器可以正常解析并运行</p>
+<h3 id="812"><a class="header" href="#812">8.12</a></h3>
+<p>使用小型的ebpfrv作为代替</p>
+<p>完成k/uprobes的代码重构，整合重复代码，使接口更为易用</p>
+<h3 id="811"><a class="header" href="#811">8.11</a></h3>
+<p>错误详情：</p>
+<ul>
+<li>
+<p>在user下用<code>b.sh</code></p>
+<p><img src="C:%5CUsers%5Cqq171%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220811145245415.png" alt="image-20220811145245415" /></p>
+</li>
+<li>
+<p>启动kernel<code>make run ARCH=riscv64 LOG=warn</code></p>
+</li>
+<li>
+<p>在kernel中启动<code>./busybox</code>可以正常运行</p>
+<p><img src="C:%5CUsers%5Cqq171%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220811151103255.png" alt="image-20220811151103255" /></p>
+</li>
+<li>
+<p>运行<code>./bmonitor</code>就会报页错误：</p>
+<p><img src="C:%5CUsers%5Cqq171%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20220811151133996.png" alt="image-20220811151133996" /></p>
+</li>
+</ul>
+<h3 id="88"><a class="header" href="#88">8.8</a></h3>
+<p>排查bmonitor启动失败的原因</p>
+<ul>
+<li>报错：panicked at 'page fault handle failed'</li>
+<li>尝试启动其它用户态程序：可以正常启动</li>
+<li>只有bmonitor与bpf-test启动时会报错误</li>
+</ul>
+<h3 id="730"><a class="header" href="#730">7.30</a></h3>
+<p>bmonitor启动不起来</p>
+<p>迁移方案：</p>
+<ul>
+<li>kprobe-&gt;kprobe:insn</li>
+<li>kretprobe-&gt;kprobe:syncfunc</li>
+</ul>
+<p>新增</p>
+<ul>
+<li>uprobe:insn</li>
+<li>uprobe:syncfunc</li>
+</ul>
+<h3 id="723"><a class="header" href="#723">7.23</a></h3>
+<p>完成ebpf模块</p>
+<p>针对不同实现方法的kprobe进行设计</p>
 <h3 id="531"><a class="header" href="#531">5.31</a></h3>
 <p>完成初赛技术报告.</p>
 <h3 id="529"><a class="header" href="#529">5.29</a></h3>
@@ -156,7 +210,7 @@
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="sys_impl/probes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="test&amp;demo/dynamic_probe.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
@@ -167,7 +221,7 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="sys_impl/probes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="test&amp;demo/dynamic_probe.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 

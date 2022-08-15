@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Rust中的异步函数 - Rust eBPF</title>
+        <title>eBPF实现 - Rust eBPF</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../background/riscv_insn.html"><strong aria-hidden="true">2.1.</strong> Risc-V指令集</a></li><li class="chapter-item expanded "><a href="../background/kprobes_uprobes.html"><strong aria-hidden="true">2.2.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="../background/rust_async.html" class="active"><strong aria-hidden="true">2.3.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="../background/eBPF.html"><strong aria-hidden="true">2.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_design/insn_decode.html"><strong aria-hidden="true">3.1.</strong> Risc-V指令解码</a></li><li class="chapter-item expanded "><a href="../sys_design/kprobes.html"><strong aria-hidden="true">3.2.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/uprobes.html"><strong aria-hidden="true">3.3.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/async_func.html"><strong aria-hidden="true">3.4.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="../sys_design/ebpf.html"><strong aria-hidden="true">3.5.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_impl/insn_decode.html"><strong aria-hidden="true">4.1.</strong> Risc-V指令解码功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/probes.html"><strong aria-hidden="true">4.2.</strong> 动态插桩功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/ebpf.html"><strong aria-hidden="true">4.3.</strong> eBPF实现</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 系统测试及演示程序</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../test&demo/dynamic_probe.html"><strong aria-hidden="true">5.1.</strong> 动态注册eBPF程序测试</a></li></ol></li><li class="chapter-item expanded "><a href="../log.html"><strong aria-hidden="true">6.</strong> 项目日志</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../background/riscv_insn.html"><strong aria-hidden="true">2.1.</strong> Risc-V指令集</a></li><li class="chapter-item expanded "><a href="../background/kprobes_uprobes.html"><strong aria-hidden="true">2.2.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="../background/rust_async.html"><strong aria-hidden="true">2.3.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="../background/eBPF.html"><strong aria-hidden="true">2.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_design/insn_decode.html"><strong aria-hidden="true">3.1.</strong> Risc-V指令解码</a></li><li class="chapter-item expanded "><a href="../sys_design/kprobes.html"><strong aria-hidden="true">3.2.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/uprobes.html"><strong aria-hidden="true">3.3.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/async_func.html"><strong aria-hidden="true">3.4.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="../sys_design/ebpf.html"><strong aria-hidden="true">3.5.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_impl/insn_decode.html"><strong aria-hidden="true">4.1.</strong> Risc-V指令解码功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/probes.html"><strong aria-hidden="true">4.2.</strong> 动态插桩功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/ebpf.html" class="active"><strong aria-hidden="true">4.3.</strong> eBPF实现</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 系统测试及演示程序</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../test&demo/dynamic_probe.html"><strong aria-hidden="true">5.1.</strong> 动态注册eBPF程序测试</a></li></ol></li><li class="chapter-item expanded "><a href="../log.html"><strong aria-hidden="true">6.</strong> 项目日志</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,57 +142,173 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="rust-异步并发"><a class="header" href="#rust-异步并发">Rust 异步并发</a></h1>
-<h2 id="简介"><a class="header" href="#简介">简介</a></h2>
-<p>在当前的 rust 生态中，我们可以使用async/await来将异步函数按照同步函数的格式一样书写，使代码更加整洁，易于维护。</p>
-<h2 id="future并发模式"><a class="header" href="#future并发模式">Future并发模式</a></h2>
-<p>Future异步并发模式是以代理模式和异步开发的混合产物，future是对将来的一种代理凭证，凭借这个凭证可以异步地在未来某个时刻得到确定的结果。</p>
-<p>Rust对Future异步并发模式做了一个完整的抽象，包含在第三方库<code>future-rs</code>中。该抽象主要包含三个部件：</p>
+                        <h1 id="ebpf"><a class="header" href="#ebpf">eBPF</a></h1>
 <ul>
-<li><strong>Future</strong>： 基本的异步计算抽象单元</li>
-<li><strong>Executor</strong>：异步计算调度层</li>
-<li><strong>Task</strong>：异步计算执行层</li>
+<li><a href="#%E8%A7%A3%E9%87%8A%E5%99%A8">解释器</a>
+<ul>
+<li><a href="#%E6%8C%87%E4%BB%A4%E8%A7%A3%E7%A0%81">指令解码</a></li>
+<li><a href="#%E6%8C%87%E4%BB%A4%E7%9A%84%E6%A8%A1%E6%8B%9F%E6%89%A7%E8%A1%8C">指令的模拟执行</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%95%B0%E6%8C%87%E4%BB%A4">算数指令</a></li>
+<li><a href="#%E8%B7%B3%E8%BD%AC%E6%8C%87%E4%BB%A4">跳转指令</a></li>
 </ul>
-<h3 id="future"><a class="header" href="#future">Future</a></h3>
-<p>在Rust中Future是一个trait，其源代码为：</p>
+</li>
+</ul>
+</li>
+<li><a href="#ebpf-helpers">eBPF helpers</a></li>
+</ul>
+<h2 id="解释器"><a class="header" href="#解释器">解释器</a></h2>
+<h3 id="指令解码"><a class="header" href="#指令解码">指令解码</a></h3>
+<p>通过pc指针，获取当前指令，将其拆分为立即数，偏移量，源寄存器，目标寄存器，操作码</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>pub trait Future{
-    type Output;
-    fn poll(self: Pin&lt;&amp;mut self&gt;, lw: &amp;LocalWaker) -&gt; Poll&lt;Self::Output&gt;;
-}
+</span>let inst = insts[pc as usize];
+pc += 1;
+let imm: i32 = ((inst &gt;&gt; 32) &amp; u32::MAX as u64) as i32;
+let off: i16 = ((inst &gt;&gt; 16) &amp; u16::MAX as u64) as i16;
+let src: usize = ((inst &gt;&gt; 12) &amp; 0x0f) as usize;
+let dst: usize = ((inst &gt;&gt; 8) &amp; 0x0f) as usize;
+let op: u8 = (inst &amp; u8::MAX as u64) as u8;
 <span class="boring">}
 </span></code></pre></pre>
-<p>其中poll方法是Future的核心，它是对轮询行为的一种抽象。在Rust中，每个Future都需要使用poll方法来轮询所要计算值的状态。该方法返回的Poll是一个枚举类型：</p>
+<h3 id="指令的模拟执行"><a class="header" href="#指令的模拟执行">指令的模拟执行</a></h3>
+<p>由于eBPF指令较多，在此只展示部分指令的模拟执行过程.</p>
+<h4 id="算数指令"><a class="header" href="#算数指令">算数指令</a></h4>
+<blockquote>
+<p>根据源操作数的不同又分为：</p>
+<ul>
+<li>
+<p>BPF_K</p>
+<p>使用 32 位即时作为源操作数</p>
+</li>
+<li>
+<p>BPF_X</p>
+<p>使用<code>src_reg</code>寄存器作为源操作数</p>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>
+<p>add</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>pub enum Poll&lt;T&gt;{
-    Ready(T),
-    Pending,
+</span>ALU_K_ADD =&gt; reg[dst] = (reg[dst] as i32).wrapping_add(imm) as u64,
+ALU_X_ADD =&gt; reg[dst] = (reg[dst] as i32).wrapping_add(reg[src] as i32) as u64,
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>or</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>ALU_K_OR =&gt; reg[dst] = (reg[dst] as u32 | imm as u32) as u64,
+ALU_X_OR =&gt; reg[dst] = (reg[dst] as u32 | reg[src] as u32) as u64,
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>etc.</p>
+</li>
+</ul>
+<h4 id="跳转指令"><a class="header" href="#跳转指令">跳转指令</a></h4>
+<ul>
+<li>
+<p>call</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>JMP_K_CALL =&gt; unsafe {
+    reg[0] = helpers[imm as usize](reg[1], reg[2], reg[3], reg[4], reg[5]);
+},
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p>jlt</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>JMP_K_JLT =&gt; {
+    if reg[dst] &lt; imm as u64 {
+        pc = (pc as i16 + off) as u16;
+    }
+}
+JMP_X_JLT =&gt; {
+    if reg[dst] &lt; reg[src] {
+        pc = (pc as i16 + off) as u16;
+    }
 }
 <span class="boring">}
 </span></code></pre></pre>
-<p>Poll&lt;T&gt;枚举类型是对准备好和未完成两种状态的统一抽象，以此来表达Future的结果。</p>
-<h3 id="executor与task"><a class="header" href="#executor与task">Executor与Task</a></h3>
-<p>在实际的异步开发中，需要一个专门的调度器来对具体的任务进行管理统筹，这个调度器就是Executor，具体的异步任务就是Task。</p>
-<h2 id="asyncawait"><a class="header" href="#asyncawait">async/await</a></h2>
-<p>async：产生一个 Future 对象，一个没有任何作用的对象，必须由调用器调用才会有用。
-await: 等待异步操作完成（基于语义理解，其实很多情况只有调用 future.await 才是事实上去调用，具体是不是之前就开始执行，这个要看我们的调用器是什么），这步是阻塞当前线程，这个语法属于 Future 对象才能调用，而且必须要在 async 函数内。</p>
-<h2 id="具体实现原理"><a class="header" href="#具体实现原理">具体实现原理</a></h2>
-<p>async块会生成一个Generator&lt;Yield=()&gt;的生成器，然后将该生成器通过单元结构体GenFuture进行包装，最后为该GenFuture实现Future</p>
-<p>await!展开的代码会在loop循环中进行判断，如果是Ready则退出。</p>
+</li>
+<li>
+<p>etc.</p>
+</li>
+</ul>
+<h2 id="ebpf-helpers"><a class="header" href="#ebpf-helpers">eBPF-helpers</a></h2>
+<p>eBPF的帮助函数是与操作系统息息相关的，因为目前暂未实现map，所以只有少量帮助函数可用：</p>
+<ul>
+<li>
+<p><code>bpf_ktime_get_ns</code></p>
+<p>打印当前时间</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// u64 bpf_ktime_get_ns(void)
+// return current ktime
+fn bpf_ktime_get_ns(_1: u64, _2: u64, _3: u64, _4: u64, _5: u64) -&gt; u64 {
+    crate::arch::timer::timer_now().as_nanos() as u64
+}
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p><code>bpf_trace_printk</code></p>
+<p>打印输出</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// long bpf_trace_printk(const char *fmt, u32 fmt_size, ...)
+unsafe fn bpf_trace_printk(fmt: u64, fmt_size: u64, p1: u64, p2: u64, p3: u64) -&gt; u64 {
+    let fmt = core::slice::from_raw_parts(fmt as *const u8, fmt_size as u32 as usize);
+    println!(
+        &quot;{}&quot;,
+        dyn_fmt::Arguments::new(core::str::from_utf8_unchecked(fmt), &amp;[format!(&quot;{:#x}&quot;, p1), format!(&quot;{}&quot;, p2), format!(&quot;{}&quot;, p3)])
+    );
+    0
+}
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+<li>
+<p><code>bpf_get_current_pid_tgid</code></p>
+<p>返回进程id</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn bpf_get_current_pid_tgid(_1: u64, _2: u64, _3: u64, _4: u64, _5: u64) -&gt; u64 {
+    let thread = current_thread().unwrap();
+    let pid = thread.proc.busy_lock().pid.get() as u64;
+    // NOTE: tgid is the same with pid
+    (pid &lt;&lt; 32) | pid
+}
+<span class="boring">}
+</span></code></pre></pre>
+</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../background/kprobes_uprobes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../sys_impl/probes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../background/eBPF.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../test&amp;demo/dynamic_probe.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -202,11 +318,11 @@ await: 等待异步操作完成（基于语义理解，其实很多情况只有�
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../background/kprobes_uprobes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../sys_impl/probes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../background/eBPF.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../test&amp;demo/dynamic_probe.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

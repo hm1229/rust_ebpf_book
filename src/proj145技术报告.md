@@ -11,25 +11,29 @@ eBPF是Linux操作系统中监控和调试内核活动的方便工具，将eBPF�
 
 ## 具体目标
 
-ebpf in rust 目前有五个主要目标
+ebpf in rust 目前几个主要目标
 
-- [x] [kprobes](./sys_design/kprobes.md)
+- [x] [riscv_insn_decode](./sys_impl/insn_decode.md)
+
+  解码riscv指令，对其进行跟踪合法性分析.
+
+- [x] [kprobes](./sys_impl/probes.md#内核跟踪库-rkprobes_lib)
 
   完成内核空间指令的动态插桩，对内核函数/合法指令进行跟踪.
   
-- [x] [uprobes](./sys_design/uprobes.md)
+- [x] [uprobes](./sys_impl/probes.md#uprobes)
 
   完成用户空间指令的动态插桩，对用户态程序中的函数/合法指令进行跟踪.
   
-- [ ] function parameter probing in probes
+- [x] function parameter probing in probes
 
   完成probes对函数参数的获取.
+
+- [x] [ebpf](./sys_impl/ebpf.md)
+
+  根据ebpf原理实现一个简单的ebpf.
 
 - [ ] async in probes
 
   完成probes对rust async 函数的跟踪支持.
-
-- [ ] ebpf
-
-  根据ebpf原理实现一个简单的ebpf.
 

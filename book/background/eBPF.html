@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../background/kprobes_uprobes.html"><strong aria-hidden="true">2.1.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="../background/rust_async.html"><strong aria-hidden="true">2.2.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="../background/eBPF.html" class="active"><strong aria-hidden="true">2.3.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_design/kprobes.html"><strong aria-hidden="true">3.1.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/uprobes.html"><strong aria-hidden="true">3.2.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/async_func.html"><strong aria-hidden="true">3.3.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="../sys_design/ebpf.html"><strong aria-hidden="true">3.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_impl/probes.html"><strong aria-hidden="true">4.1.</strong> 动态插桩功能</a></li></ol></li><li class="chapter-item expanded "><a href="../log.html"><strong aria-hidden="true">5.</strong> 项目日志</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../background/riscv_insn.html"><strong aria-hidden="true">2.1.</strong> Risc-V指令集</a></li><li class="chapter-item expanded "><a href="../background/kprobes_uprobes.html"><strong aria-hidden="true">2.2.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="../background/rust_async.html"><strong aria-hidden="true">2.3.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="../background/eBPF.html" class="active"><strong aria-hidden="true">2.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_design/insn_decode.html"><strong aria-hidden="true">3.1.</strong> Risc-V指令解码</a></li><li class="chapter-item expanded "><a href="../sys_design/kprobes.html"><strong aria-hidden="true">3.2.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/uprobes.html"><strong aria-hidden="true">3.3.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/async_func.html"><strong aria-hidden="true">3.4.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="../sys_design/ebpf.html"><strong aria-hidden="true">3.5.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_impl/insn_decode.html"><strong aria-hidden="true">4.1.</strong> Risc-V指令解码功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/probes.html"><strong aria-hidden="true">4.2.</strong> 动态插桩功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/ebpf.html"><strong aria-hidden="true">4.3.</strong> eBPF实现</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 系统测试及演示程序</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../test&demo/dynamic_probe.html"><strong aria-hidden="true">5.1.</strong> 动态注册eBPF程序测试</a></li></ol></li><li class="chapter-item expanded "><a href="../log.html"><strong aria-hidden="true">6.</strong> 项目日志</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,9 +142,53 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="linux中的ebpf仍需继续了解"><a class="header" href="#linux中的ebpf仍需继续了解">Linux中的eBPF（仍需继续了解）</a></h1>
+                        <h1 id="linux中的ebpf"><a class="header" href="#linux中的ebpf">Linux中的eBPF</a></h1>
+<ul>
+<li><a href="#%E7%AE%80%E4%BB%8B">简介</a></li>
+<li><a href="#ebpf%E6%8C%87%E4%BB%A4%E9%9B%86">eBPF指令集</a>
+<ul>
+<li><a href="#%E5%AF%84%E5%AD%98%E5%99%A8%E4%B8%8E%E8%B0%83%E7%94%A8%E7%BA%A6%E5%AE%9A">寄存器与调用约定</a></li>
+<li><a href="#%E6%8C%87%E4%BB%A4%E7%BC%96%E7%A0%81">指令编码</a></li>
+</ul>
+</li>
+<li><a href="#ebpf%E9%AA%8C%E8%AF%81%E5%99%A8">eBPF验证器</a></li>
+<li><a href="#ebpf_helpers">eBPF helpers</a></li>
+<li><a href="#ebpf_maps">eBPF maps</a></li>
+</ul>
 <h1 id="简介"><a class="header" href="#简介">简介</a></h1>
 <p>eBPF 源于 BPF，本质上是处于内核中的一个高效与灵活的虚类虚拟机组件，以一种安全的方式在许多内核 hook 点执行字节码。BPF 最初的目的是用于高效网络报文过滤，经过重新设计，eBPF 不再局限于网络协议栈，已经成为内核顶级的子系统，演进为一个通用执行引擎。开发者可基于 eBPF 开发性能分析工具、软件定义网络、安全等诸多场景。</p>
+<h2 id="ebpf指令集"><a class="header" href="#ebpf指令集">eBPF指令集</a></h2>
+<h3 id="寄存器与调用约定"><a class="header" href="#寄存器与调用约定">寄存器与调用约定</a></h3>
+<p>eBPF 有10个通用寄存器和一个只读栈帧寄存器，它们均为64位。</p>
+<p>eBPF 调用规则定义为：</p>
+<ul>
+<li>R0：函数调用的返回值和 eBPF 程序的退出值</li>
+<li>R1 - R5：函数调用的参数</li>
+<li>R6 - R9：被调用方保存的寄存器，函数调用将保留这些寄存器</li>
+<li>R10：访问堆栈的只读栈帧指针</li>
+</ul>
+<p>R0 - R5 是暂存寄存器，如有必要，eBPF 程序需要在调用之间溢出/填充它们。</p>
+<h3 id="指令编码"><a class="header" href="#指令编码">指令编码</a></h3>
+<p>eBPF 有两种指令编码：</p>
+<ul>
+<li>基本指令编码，使用 64 位对指令进行编码</li>
+<li>宽指令编码，它在基本指令之后附加第二个 64 位即时值 （imm64），总共 128 位。</li>
+</ul>
+<p>基本指令编码如下所示：</p>
+<table><thead><tr><th>32 位 （MSB）</th><th>16 位</th><th>4 位</th><th>4 位</th><th>8 位 （LSB）</th></tr></thead><tbody>
+<tr><td>立即数</td><td>偏移</td><td>源寄存器</td><td>目标寄存器</td><td>操作码</td></tr>
+</tbody></table>
+<p>请注意，大多数说明不会使用所有字段。未使用的字段应清除为零。</p>
+<h2 id="ebpf验证器"><a class="header" href="#ebpf验证器">eBPF验证器</a></h2>
+<p>eBPF计划的安全性分两步确定。</p>
+<p>第一步执行 DAG 检查以禁止循环和其他 CFG 验证。特别是，它将检测具有无法访问的指令的程序。（尽管传统的 BPF 检查器允许它们）</p>
+<p>第二步从第一个 指令 开始，并下降所有可能的路径。它模拟每个 指令 的执行，并观察寄存器和堆栈的状态变化。</p>
+<p>在程序开始时，寄存器R1包含一个指向上下文的指针，其类型为PTR_TO_CTX。如果验证者看到一个执行 R2=R1 的指令，则 R2 现在也具有类型 PTR_TO_CTX并且可以在表达式的右侧使用。如果 R1=PTR_TO_CTX指令 为 R2=R1+R1，则 R2=SCALAR_VALUE，因为添加两个有效指针会使指针无效。（在“安全”模式下，验证程序将拒绝任何类型的指针算术，以确保内核地址不会泄露给非特权用户）</p>
+<h2 id="ebpf_helpers"><a class="header" href="#ebpf_helpers">eBPF_helpers</a></h2>
+<p>ebpf的帮助函数，在eBPF程序中，只可调用这些函数</p>
+<h2 id="ebpf_maps"><a class="header" href="#ebpf_maps">eBPF_maps</a></h2>
+<p>maps是一个不同类型的通用存储方式，用于在内核和用户空间之间共享数据。</p>
+<p>更多eBPF信息可查看：<a href="https://www.kernel.org/doc/html/latest/bpf/index.html">BPF Documentation — The Linux Kernel documentation</a></p>
 
                     </main>
 
@@ -154,7 +198,7 @@
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../sys_design/kprobes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../sys_design/insn_decode.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -168,7 +212,7 @@
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../sys_design/kprobes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../sys_design/insn_decode.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

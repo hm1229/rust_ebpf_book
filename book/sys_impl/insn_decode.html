@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>动态插桩功能 - Rust eBPF</title>
+        <title>Risc-V指令解码功能 - Rust eBPF</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../background/riscv_insn.html"><strong aria-hidden="true">2.1.</strong> Risc-V指令集</a></li><li class="chapter-item expanded "><a href="../background/kprobes_uprobes.html"><strong aria-hidden="true">2.2.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="../background/rust_async.html"><strong aria-hidden="true">2.3.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="../background/eBPF.html"><strong aria-hidden="true">2.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_design/insn_decode.html"><strong aria-hidden="true">3.1.</strong> Risc-V指令解码</a></li><li class="chapter-item expanded "><a href="../sys_design/kprobes.html"><strong aria-hidden="true">3.2.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/uprobes.html"><strong aria-hidden="true">3.3.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/async_func.html"><strong aria-hidden="true">3.4.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="../sys_design/ebpf.html"><strong aria-hidden="true">3.5.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_impl/insn_decode.html"><strong aria-hidden="true">4.1.</strong> Risc-V指令解码功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/probes.html" class="active"><strong aria-hidden="true">4.2.</strong> 动态插桩功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/ebpf.html"><strong aria-hidden="true">4.3.</strong> eBPF实现</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 系统测试及演示程序</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../test&demo/dynamic_probe.html"><strong aria-hidden="true">5.1.</strong> 动态注册eBPF程序测试</a></li></ol></li><li class="chapter-item expanded "><a href="../log.html"><strong aria-hidden="true">6.</strong> 项目日志</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../background/riscv_insn.html"><strong aria-hidden="true">2.1.</strong> Risc-V指令集</a></li><li class="chapter-item expanded "><a href="../background/kprobes_uprobes.html"><strong aria-hidden="true">2.2.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="../background/rust_async.html"><strong aria-hidden="true">2.3.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="../background/eBPF.html"><strong aria-hidden="true">2.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_design/insn_decode.html"><strong aria-hidden="true">3.1.</strong> Risc-V指令解码</a></li><li class="chapter-item expanded "><a href="../sys_design/kprobes.html"><strong aria-hidden="true">3.2.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/uprobes.html"><strong aria-hidden="true">3.3.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/async_func.html"><strong aria-hidden="true">3.4.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="../sys_design/ebpf.html"><strong aria-hidden="true">3.5.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_impl/insn_decode.html" class="active"><strong aria-hidden="true">4.1.</strong> Risc-V指令解码功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/probes.html"><strong aria-hidden="true">4.2.</strong> 动态插桩功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/ebpf.html"><strong aria-hidden="true">4.3.</strong> eBPF实现</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 系统测试及演示程序</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../test&demo/dynamic_probe.html"><strong aria-hidden="true">5.1.</strong> 动态注册eBPF程序测试</a></li></ol></li><li class="chapter-item expanded "><a href="../log.html"><strong aria-hidden="true">6.</strong> 项目日志</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,177 +142,162 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="内核及用户态动态跟踪程序"><a class="header" href="#内核及用户态动态跟踪程序">内核及用户态动态跟踪程序</a></h1>
+                        <h1 id="指令解码"><a class="header" href="#指令解码">指令解码</a></h1>
+<p>根据Riscv设计文档进行解码.</p>
 <ul>
-<li><a href="#%E5%86%85%E6%A0%B8%E8%B7%9F%E8%B8%AA%E5%BA%93-rkprobes_lib">内核跟踪库  rkprobes lib</a>
+<li><a href="#%E6%8C%87%E4%BB%A4%E5%90%88%E6%B3%95%E6%80%A7%E5%88%A4%E6%96%AD%E5%BA%93">指令合法性判断库</a>
 <ul>
 <li><a href="#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E">使用说明</a>
 <ul>
-<li><a href="#APIs">APIs</a></li>
-<li><a href="#%E6%96%B9%E6%B3%95">方法</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#rCore%E4%B8%AD%E5%86%85%E6%A0%B8%E5%8F%8A%E7%94%A8%E6%88%B7%E6%80%81%E8%B7%9F%E8%B8%AA%E7%A8%8B%E5%BA%8F">rCore中内核及用户态跟踪程序</a>
+<li><a href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84">数据结构</a>
 <ul>
-<li><a href="#kprobes">kprobes</a></li>
-<li><a href="#uprobes">uprobes</a>
+<li><a href="#InsnStatus">InsnStatus</a></li>
+</ul>
+</li>
+<li><a href="#APIs">APIs</a>
 <ul>
-<li><a href="#%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95">使用方法</a></li>
+<li><a href="#get_insn_length">get_insn_length</a></li>
+<li><a href="#insn_decode">insn_decode</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-<h2 id="内核跟踪库-rkprobes_lib"><a class="header" href="#内核跟踪库-rkprobes_lib">内核跟踪库-rkprobes_lib</a></h2>
-<p>可以在<a href="../sys_design/kprobes.html">kprobes的系统设计</a>一节看到关于kprobes的实现原理.</p>
-<p>如果单独使用kprobes，kprobes可以单独成为一个lib，方便所有操作系统调用.</p>
-<p>lib: github<a href="https://github.com/hm1229/rkprobes">仓库.</a></p>
+</li>
+<li><a href="#sp%E7%9B%B8%E5%85%B3%E6%8C%87%E4%BB%A4%E8%A7%A3%E7%A0%81">sp相关指令解码</a>
+<ul>
+<li><a href="#addi">addi</a></li>
+<li><a href="#c.addi16sp">c.addi16sp</a></li>
+<li><a href="#c.addi">c.addi</a></li>
+<li><a href="#c.addi4spn">c.addi4spn</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="指令合法性判断库"><a class="header" href="#指令合法性判断库">指令合法性判断库</a></h2>
+<p>在已有的riscv-decode库的基础上，增加了压缩指令的解码过程</p>
+<p>将riscv_insn_decode代码解耦合后，独立成库:<a href="https://github.com/hm1229/riscv_insn_decode">riscv_insn_decode</a></p>
 <h3 id="使用说明"><a class="header" href="#使用说明">使用说明</a></h3>
-<h4 id="apis"><a class="header" href="#apis">APIs</a></h4>
+<p>如果要使用 <code>riscv_insn_decode</code>库,首先需要更新 <code>Cargo.toml</code></p>
+<pre><code class="language-toml">[dependencies]
+riscv_insn_decode = {git = &quot;https://github.com/hm1229/riscv_insn_decode&quot;, rev = &quot;0b954c9&quot;}
+</code></pre>
+<h4 id="数据结构"><a class="header" href="#数据结构">数据结构</a></h4>
+<h5 id="insnstatus"><a class="header" href="#insnstatus">InsnStatus</a></h5>
+<p>指令是否合法</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>// register a kprobe, need the address of the function or instruction, two handler functions and the type you want to probe
-pub fn kprobe_register(
-    addr: usize, 
-    handler: Arc&lt;Mutex&lt;dyn FnMut(&amp;mut TrapFrame) + Send&gt;&gt;, 
-    post_handler: Option&lt;Arc&lt;Mutex&lt;dyn FnMut(&amp;mut TrapFrame) + Send&gt;&gt;&gt;, 
-    probe_type: ProbeType
-) -&gt; isize ;
-
-//unregister address-related probe
-pub fn kprobe_unregister(addr: usize) -&gt; isize;
-
-//trap handler for handler kprobes
-pub fn kprobes_trap_handler(cx: &amp;mut TrapFrame);
+</span>#[derive(Debug)]
+pub enum InsnStatus {
+    Illegal,
+    Legal,
+}
 <span class="boring">}
 </span></code></pre></pre>
-<h4 id="方法"><a class="header" href="#方法">方法</a></h4>
-<ul>
-<li>
-<p>讲 <code>kprobes_trap_handler</code>放到OS的中断处理程序中.例如：</p>
+<h4 id="apis"><a class="header" href="#apis">APIs</a></h4>
+<h5 id="get_insn_length"><a class="header" href="#get_insn_length">get_insn_length</a></h5>
+<p>根据传入的指令地址，返回指令的长度</p>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>pub fn trap_handler_no_frame(tf: &amp;mut TrapFrame) {
-    let scause = scause::read();
-    match scause.cause() {
-        Trap::Exception(E::Breakpoint) =&gt; rkprobes::kprobes_trap_handler(tf), //add here
+</span>use riscv_insn_decode::get_insn_length;
+
+let length = get_insn_length(addr);
+<span class="boring">}
+</span></code></pre></pre>
+<h5 id="insn_decode"><a class="header" href="#insn_decode">insn_decode</a></h5>
+<p>根据传入的指令地址，返回指令是否合法.</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use riscv_insn_decode::{insn_decode, InsnStatus};
+
+match insn_decode(addr){
+    InsnStatus::Legal =&gt; {
+        unimplemented!();
+    },
+    InsnStatus::Illegal =&gt; {
+        unimplemented!();
     }
 }
 <span class="boring">}
 </span></code></pre></pre>
-</li>
-<li>
-<p>准备 <code>handler</code> 和 <code>post_handler</code>, <code>handler</code> 在函数或指令之前执行的跟踪函数， <code>post_hanlder</code> 在函数或指令执行之后运行的跟踪函数. <code>handler</code>是必须的,  <code>post_handler</code> 是可选择的,这两个函数的输入值是一个包含所有寄存器的结构体，使用的是TrapFrame的结构体.</p>
+<h2 id="sp相关指令解码"><a class="header" href="#sp相关指令解码">sp相关指令解码</a></h2>
+<p>根据Riscv文档，解析立即数.</p>
+<h3 id="addi"><a class="header" href="#addi">addi</a></h3>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>pub fn example_pre_handler(cx: &amp;mut TrapFrame){
-    println!{&quot;pre_handler: spec:{:#x}&quot;, cx.sepc};
+</span>let inst = u32::from_le_bytes(slot[..4].try_into().unwrap());
+
+// addi sp, sp, imm
+let addisp = sext(((inst &gt;&gt; 20) &amp; 0b111111111111) as isize, 12) as usize;
+<span class="boring">}
+</span></code></pre></pre>
+<h3 id="caddi16sp-imm"><a class="header" href="#caddi16sp-imm">c.addi16sp imm</a></h3>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>fn sext(x: isize, size: usize) -&gt; isize {
+    let shift = core::mem::size_of::&lt;isize&gt;() * 8 - size;
+    (x &lt;&lt; shift) &gt;&gt; shift
 }
 
-pub fn example_post_handler(cx: &amp;mut TrapFrame){
-    println!{&quot;post_handler: spec:{:#x}&quot;, cx.sepc};
-}
+let inst = u16::from_le_bytes(slot[..2].try_into().unwrap());
+let addisp = sext(
+     ((((inst &gt;&gt; 12) &amp; 0b1) &lt;&lt; 9)
+         + (((inst &gt;&gt; 6) &amp; 0b1) &lt;&lt; 4)
+         + (((inst &gt;&gt; 5) &amp; 0b1) &lt;&lt; 6)
+         + (((inst &gt;&gt; 3) &amp; 0b11) &lt;&lt; 7)
+         + (((inst &gt;&gt; 2) &amp; 0b1) &lt;&lt; 5)) as isize,
+     10,
+) as usize;
 <span class="boring">}
 </span></code></pre></pre>
-</li>
-<li>
-<p>为了注册一个 <code>kprobe</code>, 你需要传递函数或指令的地址 , 自己写好的<code>handler</code> 和 <code>post_handler</code>(可选), 跟踪的方式(函数或者指令).</p>
+<h3 id="caddi-sp-imm"><a class="header" href="#caddi-sp-imm">c.addi sp, imm</a></h3>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>pub enum ProbeType{
-    Insn,
-    Func,
+</span>fn sext(x: isize, size: usize) -&gt; isize {
+    let shift = core::mem::size_of::&lt;isize&gt;() * 8 - size;
+    (x &lt;&lt; shift) &gt;&gt; shift
 }
 
-rkprobes::kprobe_register(
-    self.addr,
-    alloc::sync::Arc::new(Mutex::new(move |cx: &amp;mut TrapFrame| {
-        example_pre_handler(cx);
-    })),
-    Some(alloc::sync::Arc::new(Mutex::new(move |cx: &amp;mut TrapFrame| {
-        example_post_handler(cx);
-    }))),
-    ProbeType::Insn,
-)
+let inst = u16::from_le_bytes(slot[..2].try_into().unwrap());
+let addisp = sext(
+    ((((inst &gt;&gt; 12) &amp; 0b1) &lt;&lt; 5) + (((inst &gt;&gt; 2) &amp; 0b11111) &lt;&lt; 0)) as isize,
+    6,
+) as usize;
 <span class="boring">}
 </span></code></pre></pre>
-</li>
-<li>
-<p>为了注销一个<code>kprobe</code>, 你只需要传递跟踪点的地址.</p>
+<h3 id="caddi4spn"><a class="header" href="#caddi4spn">c.addi4spn</a></h3>
 <pre><pre class="playground"><code class="language-rust">
 <span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
-</span>rkprobes::kprobe_unregister(addr)
-<span class="boring">}
-</span></code></pre></pre>
-</li>
-</ul>
-<h2 id="rcore中内核及用户态跟踪程序"><a class="header" href="#rcore中内核及用户态跟踪程序">rCore中内核及用户态跟踪程序</a></h2>
-<h3 id="kprobes"><a class="header" href="#kprobes">kprobes</a></h3>
-<p>kprobes的操作与<a href="#%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E">rkprobes</a>使用一致.</p>
-<p>为了方便后续可以跟踪异步函数，probe_type结构体进行了一次更新.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>pub enum ProbeType {
-    Insn,
-    SyncFunc,
-    AsyncFunc,
+</span>fn sext(x: isize, size: usize) -&gt; isize {
+    let shift = core::mem::size_of::&lt;isize&gt;() * 8 - size;
+    (x &lt;&lt; shift) &gt;&gt; shift
 }
+
+let inst = u16::from_le_bytes(slot[..2].try_into().unwrap());
+let addisp = sext(((((inst &gt;&gt; 11) &amp; 0b111) &lt;&lt; 3)
+    + (((inst &gt;&gt; 7) &amp; 0b1111) &lt;&lt; 5)
+    + (((inst &gt;&gt; 6) &amp; 0b1) &lt;&lt; 1)
+    + (((inst &gt;&gt; 5) &amp; 0b1) &lt;&lt; 2)) as isize,
+    10
+) as usize;
 <span class="boring">}
 </span></code></pre></pre>
-<h3 id="uprobes"><a class="header" href="#uprobes">uprobes</a></h3>
-<p>在注册阶段需要额外传入需要跟踪的用户态进程的路径,其余参数与kprobes一样.</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>fn register_uprobes(
-    &amp;self,
-    path: String,
-    addr: usize,
-    handler: Arc&lt;Mutex&lt;dyn FnMut(&amp;mut UserContext) + Send&gt;&gt;,
-    post_handler: Option&lt;Arc&lt;Mutex&lt;dyn FnMut(&amp;mut UserContext) + Send&gt;&gt;&gt;,
-    probe_type: ProbeType
-) -&gt; isize;
-<span class="boring">}
-</span></code></pre></pre>
-<p>中断处理函数需要传入另一个存储寄存器的结构体</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>fn uprobes_trap_handler(&amp;self, cx: &amp;mut UserContext);
-<span class="boring">}
-</span></code></pre></pre>
-<p>针对每一个用户态进程，需要在进入时初始化当前进程注册过的跟踪点</p>
-<pre><pre class="playground"><code class="language-rust">
-<span class="boring">#![allow(unused)]
-</span><span class="boring">fn main() {
-</span>fn uprobes_init(&amp;self)
-<span class="boring">}
-</span></code></pre></pre>
-<h4 id="使用方法"><a class="header" href="#使用方法">使用方法</a></h4>
-<p>如果需要使用uprobes，你需要：</p>
-<ul>
-<li>注册uprobes.</li>
-<li>将uprobes中断处理函数放到内核处理用户态发生的中断的函数中去.</li>
-<li>在sys_exec中加入初始化函数<code>uprobes_init</code>.</li>
-</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../sys_impl/insn_decode.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../sys_design/ebpf.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../sys_impl/ebpf.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../sys_impl/probes.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -322,11 +307,11 @@ rkprobes::kprobe_register(
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../sys_impl/insn_decode.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../sys_design/ebpf.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../sys_impl/ebpf.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../sys_impl/probes.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

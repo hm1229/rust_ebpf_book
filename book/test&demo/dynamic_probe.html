@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>用户态动态跟踪 Uprobes - Rust eBPF</title>
+        <title>动态注册eBPF程序测试 - Rust eBPF</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="../proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../background/riscv_insn.html"><strong aria-hidden="true">2.1.</strong> Risc-V指令集</a></li><li class="chapter-item expanded "><a href="../background/kprobes_uprobes.html"><strong aria-hidden="true">2.2.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="../background/rust_async.html"><strong aria-hidden="true">2.3.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="../background/eBPF.html"><strong aria-hidden="true">2.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_design/insn_decode.html"><strong aria-hidden="true">3.1.</strong> Risc-V指令解码</a></li><li class="chapter-item expanded "><a href="../sys_design/kprobes.html"><strong aria-hidden="true">3.2.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/uprobes.html" class="active"><strong aria-hidden="true">3.3.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/async_func.html"><strong aria-hidden="true">3.4.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="../sys_design/ebpf.html"><strong aria-hidden="true">3.5.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_impl/insn_decode.html"><strong aria-hidden="true">4.1.</strong> Risc-V指令解码功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/probes.html"><strong aria-hidden="true">4.2.</strong> 动态插桩功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/ebpf.html"><strong aria-hidden="true">4.3.</strong> eBPF实现</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 系统测试及演示程序</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../test&demo/dynamic_probe.html"><strong aria-hidden="true">5.1.</strong> 动态注册eBPF程序测试</a></li></ol></li><li class="chapter-item expanded "><a href="../log.html"><strong aria-hidden="true">6.</strong> 项目日志</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../proj145技术报告.html"><strong aria-hidden="true">1.</strong> 简介</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> 项目背景与相关工作</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../background/riscv_insn.html"><strong aria-hidden="true">2.1.</strong> Risc-V指令集</a></li><li class="chapter-item expanded "><a href="../background/kprobes_uprobes.html"><strong aria-hidden="true">2.2.</strong> kprobes与uprobes</a></li><li class="chapter-item expanded "><a href="../background/rust_async.html"><strong aria-hidden="true">2.3.</strong> Rust中的异步函数</a></li><li class="chapter-item expanded "><a href="../background/eBPF.html"><strong aria-hidden="true">2.4.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">3.</strong> 系统设计</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_design/insn_decode.html"><strong aria-hidden="true">3.1.</strong> Risc-V指令解码</a></li><li class="chapter-item expanded "><a href="../sys_design/kprobes.html"><strong aria-hidden="true">3.2.</strong> 内核动态跟踪 Kprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/uprobes.html"><strong aria-hidden="true">3.3.</strong> 用户态动态跟踪 Uprobes</a></li><li class="chapter-item expanded "><a href="../sys_design/async_func.html"><strong aria-hidden="true">3.4.</strong> 异步函数跟踪</a></li><li class="chapter-item expanded "><a href="../sys_design/ebpf.html"><strong aria-hidden="true">3.5.</strong> eBPF</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">4.</strong> 系统实现</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sys_impl/insn_decode.html"><strong aria-hidden="true">4.1.</strong> Risc-V指令解码功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/probes.html"><strong aria-hidden="true">4.2.</strong> 动态插桩功能</a></li><li class="chapter-item expanded "><a href="../sys_impl/ebpf.html"><strong aria-hidden="true">4.3.</strong> eBPF实现</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> 系统测试及演示程序</div></li><li><ol class="section"><li class="chapter-item expanded "><a href="../test&demo/dynamic_probe.html" class="active"><strong aria-hidden="true">5.1.</strong> 动态注册eBPF程序测试</a></li></ol></li><li class="chapter-item expanded "><a href="../log.html"><strong aria-hidden="true">6.</strong> 项目日志</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,93 +142,96 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="uprobes"><a class="header" href="#uprobes">Uprobes</a></h1>
-<h2 id="设计思路"><a class="header" href="#设计思路">设计思路</a></h2>
-<h3 id="函数跟踪"><a class="header" href="#函数跟踪">函数跟踪</a></h3>
+                        <h1 id="动态注册ebpf程序测试"><a class="header" href="#动态注册ebpf程序测试">动态注册eBPF程序测试</a></h1>
+<h2 id="测试准备"><a class="header" href="#测试准备">测试准备</a></h2>
+<h3 id="ebpf-demo"><a class="header" href="#ebpf-demo">eBPF demo</a></h3>
+<p>实现了一个小的eBPF程序，只负责打印输出寄存器中的<code>sepc</code>值</p>
+<pre><code class="language-c">int prog(struct TrapFrame* cx) {
+    char fmt[] = &quot;from ebpf: the probed address is {}&quot;;
+    bpf_trace_printk(fmt, 37, cx-&gt;sepc, 0, 0);
+    return 0;
+}
+</code></pre>
+<h3 id="用户态程序"><a class="header" href="#用户态程序">用户态程序</a></h3>
+<h4 id="ebpf插桩程序"><a class="header" href="#ebpf插桩程序">eBPF插桩程序</a></h4>
+<p>该程序主要负责接收用户的动态注册要求，通过系统调用的方式在内核态进行注册，注册完成会返回注册提示。</p>
+<p>交互部分代码省略，系统调用注册部分代码：</p>
+<pre><pre class="playground"><code class="language-rust">
+<span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>//rust/ebpf
+fn syscall_ebpf(addr: String, tp: u16, path: String){
+    let prog = include_bytes!(&quot;hello.bin&quot;);
+    if sys_register_ebpf(
+        usize::from_str_radix(&amp;addr, 16).unwrap(),
+        prog as *const u8,
+        prog.len(),
+        tp as usize,
+        path.as_ptr()
+    ) == 0
+    {
+        println!(&quot;hook successful&quot;);
+    } else {
+        println!(&quot;hook failed&quot;);
+    }
+}
+<span class="boring">}
+</span></code></pre></pre>
+<h4 id="用户态动态插桩测试程序"><a class="header" href="#用户态动态插桩测试程序">用户态动态插桩测试程序</a></h4>
+<p>该程序只用来调用两个函数：</p>
+<pre><pre class="playground"><code class="language-rust">//rust/test_uprobes
+pub fn main(){
+    test_uprobes1();
+    test_uprobes2();
+}
+
+#[inline(never)]
+fn test_uprobes1(){
+    println!(&quot;uprobes1!&quot;);
+}
+
+#[inline(never)]
+fn test_uprobes2(){
+    println!(&quot;uprobes2!&quot;);
+}
+</code></pre></pre>
+<h2 id="测试"><a class="header" href="#测试">测试</a></h2>
+<h3 id="测试步骤"><a class="header" href="#测试步骤">测试步骤</a></h3>
+<ol>
+<li>进行内核eBPF注册程序(<code>ebpf::arm</code>)的函数跟踪插桩</li>
+<li>进行用户态测试程序(<code>test_uprobes::test_uprobes1</code>)的指令跟踪插桩</li>
+<li>解除内核eBPF注册程序(<code>ebpf::arm</code>)的插桩</li>
+<li>进行用户态测试程序(<code>test_uprobes::test_uprobes2</code>)的函数跟踪插桩</li>
+<li>运行用户态测试程序(<code>test_uprobes</code>)</li>
+</ol>
+<h3 id="结果展示"><a class="header" href="#结果展示">结果展示</a></h3>
+<p><img src="../img/demo.png" alt="" /></p>
+<h3 id="结果解析"><a class="header" href="#结果解析">结果解析</a></h3>
 <ol>
 <li>
-<p>注册阶段</p>
-<ul>
-<li>根据传入的地址与探测的用户程序路径，解析指令，获取sp的变化值，与<code>handler</code>，<code>post_handler</code>等一起存入<code>uprobes</code>数据结构中.</li>
-<li>将当前地址改为可写并修改指令为<code>ebreak</code>.</li>
-</ul>
+<p>在进行用户态测试程序(<code>test_uprobes::test_uprobes1</code>)的指令跟踪插桩后，会有输出:</p>
+<pre><code>from ebpf: the probed address is 0xffffffffc0248cc6
+post_handler: spec:0xffffffffc0bc5750
+</code></pre>
+<p>说明内核态程序可以正常动态跟踪，eBPF程序可以正常运行。</p>
 </li>
 <li>
-<p>中断处理阶段</p>
-<p>根据中断地址与进程inode判断当前属于哪个<code>uprobe</code>,并判断其属于哪一次中断.剩下同kprobes处理办法.</p>
-<ul>
-<li>第一次中断
-<ol>
-<li>执行<code>handler</code>.</li>
-<li>保存跟踪函数的返回值，并将其改为ebreak的地址.</li>
-<li>根据解析出的sp值，对堆栈指针进行操作.</li>
-<li>返回到中断指令的下一条指令.</li>
-</ol>
-</li>
-<li>第二次中断
-<ol>
-<li>执行<code>post_handler</code>.</li>
-<li>将中断的返回地址改为之前保存的返回值.</li>
-</ol>
-</li>
-</ul>
-</li>
-</ol>
-<h3 id="指令跟踪"><a class="header" href="#指令跟踪">指令跟踪</a></h3>
-<ol>
-<li>
-<p>注册阶段</p>
-<ul>
-<li>根据传入的地址，解析指令，判断是否合法(合法的判断条件同Linux的规则)，将<code>handler</code>，<code>post_handler</code>等一起存入<code>kprobes</code>数据结构中.</li>
-<li>如果合法，开辟一块可读可写可执行的用户态空间，将当前地址的指令存放到开辟了的用户态空间中，并在指令后添加ebreak指令.</li>
-</ul>
+<p>在第二次进行用户态测试程序(<code>test_uprobes::test_uprobes2</code>)的指令跟踪插桩后，没有输出，说明跟踪可以正常解除</p>
 </li>
 <li>
-<p>中断处理阶段</p>
-<p>根据中断地址与用户态进程的路径判断当前属于哪个<code>uprobe</code>,并判断其属于哪一次中断.剩下同kprobes处理办法.</p>
-<ul>
-<li>第一次中断
-<ol>
-<li>执行<code>handler</code>.</li>
-<li>返回到注册阶段开辟出来的地址上.</li>
-</ol>
-</li>
-<li>第二次中断
-<ol>
-<li>执行<code>post_handler</code>.</li>
-<li>将中断返回地址改为原地址的下一条指令的地址.</li>
-</ol>
-</li>
-</ul>
+<p>在最后运行<code>test_uprobes</code>时，<code>uprobes1!</code>的输出在<code>post_handler</code>前，<code>uprobes2!</code>的输出在<code>from ebpf...</code>与<code>post_handler</code>中间，说明用户态程序可以正常跟踪且指令和函数的跟踪均可以正常运行。</p>
 </li>
 </ol>
-<h3 id="执行阶段"><a class="header" href="#执行阶段">执行阶段</a></h3>
-<p>获取即将运行的用户态进程，将该进程上已经注册的跟踪点进行操作，添加ebreak等</p>
-<h3 id="数据结构"><a class="header" href="#数据结构">数据结构</a></h3>
-<ul>
-<li><strong>addr：</strong> 跟踪的地址</li>
-<li><strong>length：</strong> 指令长度</li>
-<li><strong>slot_addr：</strong> 用户态插槽的地址</li>
-<li><strong>addisp：</strong> 栈指针偏移</li>
-<li><strong>func_ra：</strong> 返回值地址</li>
-<li><strong>func_ebreak_addr：</strong> 函数中断地址</li>
-<li><strong>insn_ebreak_addr：</strong> 指令中断地址</li>
-<li><strong>handler：</strong> 跟踪前回调函数</li>
-<li><strong>post_handler：</strong> 跟踪后回调函数</li>
-<li><strong>probe_type：</strong> 探测类型</li>
-</ul>
-<h2 id="流程"><a class="header" href="#流程">流程</a></h2>
-<p>流程基本同<a href="./kprobes.html#%E6%B5%81%E7%A8%8B%E5%9B%BE">kprobes</a></p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../sys_design/kprobes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../sys_impl/ebpf.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../sys_design/async_func.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../log.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -238,11 +241,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../sys_design/kprobes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../sys_impl/ebpf.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../sys_design/async_func.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../log.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
